@@ -6,5 +6,5 @@ mainmenu:
   #   icon_class: "fa-home"
   aboutme:
     url: "/about/"
-    text: "About"
+    text: "About Me"
     icon_class: "fa-info-circle"
