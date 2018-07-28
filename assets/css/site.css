@@ -22,6 +22,7 @@ body {
 /*navbar stuff*/
 .name-holder{
   margin-left:10px;
+  text-align:right;
 }
 
 .blame-holder{
@@ -33,6 +34,7 @@ body {
 
 .navbar .navbar-brand {
   padding: 0px;
+  text-align:right;
 }
 .navbar .navbar-brand img {
   height: 51px;/* because the navbar has a height of 50px and 1px border bottom*/
