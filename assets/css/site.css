@@ -38,7 +38,7 @@ body {
   height: 51px;/* because the navbar has a height of 50px and 1px border bottom*/
 }
 
-.navbar-right li{
+.navbar-right {
   font-size: 20px;
   text-align:right;
 }
