@@ -14,8 +14,13 @@
           <span class="name-holder">{{ site.title }}</span>-->
         </a>
       </div>
+      
+      <a id="site-title" class="navbar-right" href="{{ "/about" | prepend: site.baseurl }}">
+          <span class="name-holder">Personal</span>
+        </a>
+      </div>
 
-      <div class="collapse navbar-collapse" id="navbar">
+     <!-- <div class="collapse navbar-collapse" id="navbar">
 
         <ul id="main-menu" class="nav navbar-nav navbar-right">
 
@@ -26,7 +31,7 @@
           {% endfor %}
 
         </ul>
-      </div>
+      </div> -->
     </div>
     <!-- /.container-fluid -->
   </nav>
