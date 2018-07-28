@@ -1,10 +1,10 @@
 
 mainmenu:
-  # home:
-  #   url: "/"
-  #   text: "Home"
+   home:
+     url: "/"
+     text: "Home"
   #   icon_class: "fa-home"
   aboutme:
     url: "/about/"
     text: "Personal"
-    icon_class: "fa-info-circle"
+    #icon_class: "fa-info-circle"
