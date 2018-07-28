@@ -157,6 +157,13 @@ background-color:#0e76a8;
   text-align: right;
 }
 
+#site-personal{
+  line-height: 50px;
+  color: #002E62;
+  font-weight: bold;
+  float: right;
+}
+
 .container h1,h2,h3,h4,h5,h6{
     color: #002e62;
 }
