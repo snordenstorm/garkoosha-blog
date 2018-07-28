@@ -1,8 +1,8 @@
 # Site settings
-title: Alexander Garkoosha
+title: Alex Garkoosha
 email: somename@somedomain.com
 description: "Just Another Jekyll Theme"
-logo_location: "https://placeholdit.imgix.net/~text?txtsize=30&bg=F8F8F8&txtclr=002E62&txt=LOGO&w=100&h=100"
+#logo_location: "https://placeholdit.imgix.net/~text?txtsize=30&bg=F8F8F8&txtclr=002E62&txt=LOGO&w=100&h=100"
 
 #baseurl: "" # the subpath of your site, e.g. /blog/
 #url: "" # the base hostname & protocol for your site
@@ -20,6 +20,6 @@ exclude: ['README.md']
 excerpt_separator: <!--more-->
 
 #show the jumbotron header on index page
-show_blog_header: true
+show_blog_header: false
 
 #theme: jekyll-theme-slate
