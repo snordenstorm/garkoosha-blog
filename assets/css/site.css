@@ -22,6 +22,7 @@ body {
 /*navbar stuff*/
 .name-holder{
   margin-left:10px;
+  font-size: 20px;
 }
 
 .blame-holder{
