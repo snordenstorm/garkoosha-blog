@@ -19,7 +19,7 @@ I am a big fan of classification theorems: [finite simple groups classification]
 <!--more-->
 
 
-###### Tokens & currencies
+##### Tokens & currencies
 
 
 
@@ -47,17 +47,7 @@ I am a big fan of classification theorems: [finite simple groups classification]
 
 
 
-
-\begin{comment}
-Cryptocurrency most important areas for improvement over the next few years:
-* More secure storage (key management)
-* Trust-minimized (decentralized) exchanges
-* Make 2nd layers more user-friendly, especially via automated routing, while not overly sacrificing trust minimization
-
-Make sure it covers the whole human life cycle (e.g. inheritance), and a wide variety of institutional and cross-border travel uses cases.
-\end{comment}
-
-###### Products for everyone
+##### Products for everyone
 
 * Blockexplorer (every currency needs it)
 * Dashboards
@@ -71,7 +61,7 @@ Make sure it covers the whole human life cycle (e.g. inheritance), and a wide va
 
 
 
-###### Products for traders
+##### Products for traders
 
 * Exchange with trading desk
 * Exchange service without trading desk
@@ -82,20 +72,20 @@ Make sure it covers the whole human life cycle (e.g. inheritance), and a wide va
 * Dark pool protocols --- e.g. RepublicProtocol
 
 
-###### Products for miners
+##### Products for miners
 
 * Mining rigs
 * Mining pool
 
 
-###### Products for investors
+##### Products for investors
 
 * Asset management as a service (a fund)
 * OTC desk
 * Token rating agency
 
 
-###### Products for gamers
+##### Products for gamers
 
 
 * Games 
