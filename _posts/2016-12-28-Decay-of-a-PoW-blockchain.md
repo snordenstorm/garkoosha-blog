@@ -532,7 +532,8 @@ This is the correct answer for $p$ satisfying $100/N \leqslant p \leqslant 50$ c
 
 
 
-![alt text](https://garkoosha.me/plot57.png)
+<img class="fullwidth" src="https://garkoosha.me/plot57.png">
+
 
 
 #### Finalization
