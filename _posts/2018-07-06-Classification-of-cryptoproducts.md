@@ -1,13 +1,25 @@
 ---
 layout: post
-tags: 51-attack vulnerabilities blockchain
+tags: theorems products
 date: 2018-07-06
 title: Classification of cryptoproducts 
 published: true
 ---
 
 
-# Tokens & currencies
+
+
+I am a big fan of classification theorems: [finite simple groups classification](https://en.wikipedia.org/wiki/Classification_of_finite_simple_groups), [compact complex surfaces](https://en.wikipedia.org/wiki/Enriques%E2%80%93Kodaira_classification), [exotic spheres classification](https://en.wikipedia.org/wiki/Exotic_sphere#Classification). It is difficult to refrain from the temptation to formulate your own.
+
+
+
+
+
+
+<!--more-->
+
+
+###### Tokens & currencies
 
 
 
@@ -45,7 +57,7 @@ Cryptocurrency most important areas for improvement over the next few years:
 Make sure it covers the whole human life cycle (e.g. inheritance), and a wide variety of institutional and cross-border travel uses cases.
 \end{comment}
 
-# Products for everyone
+###### Products for everyone
 
 * Blockexplorer (every currency needs it)
 * Dashboards
@@ -59,7 +71,7 @@ Make sure it covers the whole human life cycle (e.g. inheritance), and a wide va
 
 
 
-# Products for traders
+###### Products for traders
 
 * Exchange with trading desk
 * Exchange service without trading desk
@@ -70,20 +82,20 @@ Make sure it covers the whole human life cycle (e.g. inheritance), and a wide va
 * Dark pool protocols --- e.g. RepublicProtocol
 
 
-# Products for miners
+###### Products for miners
 
 * Mining rigs
 * Mining pool
 
 
-# Products for investors
+###### Products for investors
 
 * Asset management as a service (a fund)
 * OTC desk
 * Token rating agency
 
 
-# Products for gamers
+###### Products for gamers
 
 
 * Games 
