@@ -1,7 +1,7 @@
 ---
 layout: post
 tags: pow
-date: 2018-03-31
+date: 2016-03-31
 title: Ethereum mining profitability
 published: true
 ---
