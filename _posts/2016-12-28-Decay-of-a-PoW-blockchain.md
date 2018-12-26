@@ -13,6 +13,8 @@ A certain number of network nodes is involved in digital currency mining. Due to
 
 With this technical malfunction, all that the network node gets as input is an experimentally obtained sequence of times when new blocks were generated T1, T2, ... . This sequence will specify to the node the percentage a new network makes from the computational capacity of the previous one. If a segment, where the node ended up to be, has more than 50\% of computational capacity before the malfunction occurs, then this segment should be considered as major and mining process should be continued. If a segment has less than 50\% of computational capacity before the malfunction occurs, then in a few cases — i.e. the network divided in more than 2 segments [N > 2] — the node might end up in the major block chain. However, it is a matter of probability. In any case, we will provide all the formulae as well as a required code for the node .
 
+<!--more-->
+
 
 ## Solution: TLDR
 

@@ -9,6 +9,8 @@ published: true
 
 This is a gentle reminder about how it started.
 
+<!--more-->
+
 # Mastercoin
 
 #### Crowdsale time span

@@ -8,6 +8,8 @@ published: true
 
 Ethereum hashing algorithm (dagger-hashimoto) is ASIC-resistant by design: it requires at least 1 Gb of RAM, and the requirements grow with the growth of Ethereum mainnet chain. Only general-purpose hardware (CPU/GPU) suits for this mining algorithm, with GPU being clearly the most efficient.
 
+<!--more-->
+
 So we need to buy some GPUs to start off. Let $h$ be the hashing power of the chosen GPU (Mhash/s), $N$ be the quantity of GPU bought. Clearly, together all GPUs are having hashing power of $Nh$ Mhash/s.
 
 Then the share under our control is $\frac{Nh}{H + Nh},$ where $H$ is total network hashrate (in Mhash/s). Daily revenue is $\frac{Nhap}{H + Nh}$, where $a$ is the daily average amount of ether mined by the network, $p$ is dollar price of 1 ETH. Daily costs are $24ewN$, where $e$ is dollar price of 1 kilowatt-hour, $w$ is electric power consumption of the GPU.
