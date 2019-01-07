@@ -9,25 +9,18 @@ published: true
 
 
 
-If a PoW network which I mine splits into $N$ segments, how do I know if I mine with the majority? 
 
 
-What I love mathematics for is how easy questions slowly unravel into very complicated-looking solutions. I love locally trivial objects which are nontrivial globally. 
+What I love mathematics for is how easy questions can slowly unravel into very complicated solutions. I love locally trivial objects that are nontrivial globally (would love to classify them!).
 
 
 
-<!--more-->
-
-
-## Problem statement
-
-A certain number of network nodes is involved in digital currency mining. Due to a technical malfunction — e.g. a break in a backbone cable — the network splits temporarily into two segments. In this case the amount of time to solve a block will increase in both segments. In other words, miners will continue to compute blocks but the whole process will be much slower. This case requires to devise a formula and a code based on the amount of time to solve a block which will indicate in what segments miners ended up to be. Therefore, if certain network nodes ended up in a minor segment — i.e. in a segment with non-maximum computational capacity — miners could then decide to stop mining process. In this case we consider the Proof-of-Work algorithm.
-
-With this technical malfunction, all that the network node gets as input is an experimentally obtained sequence of times when new blocks were generated T1, T2, ... . This sequence will specify to the node the percentage a new network makes from the computational capacity of the previous one. If a segment, where the node ended up to be, has more than 50\% of computational capacity before the malfunction occurs, then this segment should be considered as major and mining process should be continued. If a segment has less than 50\% of computational capacity before the malfunction occurs, then in a few cases — i.e. the network divided in more than 2 segments [N > 2] — the node might end up in the major block chain. However, it is a matter of probability. In any case, we will provide all the formulae as well as a required code for the node.
-
+Here's blockchain-related example of such a question: if a PoW network splits into $N$ segments, how can I tell if I mine with the majority? 
 
 
 <!--more-->
+
+
 
 ## Problem statement
 
@@ -63,7 +56,7 @@ $$H = h + \sum\limits_{i=1}^{N-1} h_i$$
 
 After the split occurred, miners will continue to solve blocks with the initial difficulty value $\Delta$. In a segment under examination the average time to solve a block will be $$T \cdot \frac{H}{h}$$ minutes
 
-In the Proof-of-Work algorithm the mining process is a matter of probability. The so-called difficulty value is adjusted to the computational capacity of the network in a way that allows miners to solve a block on average every T minutes. Therefore, the difficulty value directly reflects the amount of computational capacity. Miners search for a valid hash. But since it is unique they are less likely to generate one, let's consider the discovery of a valid hash a success. Let s  be the probability of success in calculating a hash. Then the probability of failure will be $(1 − s)$.
+In the Proof-of-Work algorithm the mining process is a matter of probability. The so-called difficulty value is adjusted to the computational capacity of the network in a way that allows miners to solve a block on average every $T$ minutes. Therefore, the difficulty value directly reflects the amount of computational capacity. Miners search for a valid hash. But since it is unique they are less likely to generate one, let's consider the discovery of a valid hash a success. Let s  be the probability of success in calculating a hash. Then the probability of failure will be $(1 − s)$.
 
 Let $T_1$, $T_2$, ... be a sequence of times when solved blocks were registered by the network node. To reiterate, the mining process is irregular. Before calculating a hash miners are only aware of the probability to find a valid one. Let random variable $\tau$ be a number of seconds necessary to solve a block.
 
@@ -72,7 +65,7 @@ Let $T_1$, $T_2$, ... be a sequence of times when solved blocks were registered 
 
 ###### Random variable $\xi$ and its probability distribution
 
-Note that the problem-specific events are actually discrete. Miners compute hashes until they find a valid one. After that the process is repeated. So instead of variable $T_i$ we use $x_i$ which is more appropriate for understanding of the whole process. $\xi$ is a number of hashes calculated by miners of a segment in order to find a i hash and counted from the moment when the hash (i − 1) was calculated. In other words, $\xi$ is an interval between two successful hash calculations expressed in a number of attempts rather than in minutes. Let the random variable $\xi$ be a number of hashes which must be calculated to solve a block.
+Note that the problem-specific events are actually discrete. Miners compute hashes until they find a valid one. After that the process is repeated. So instead of variable $T_i$ we use $x_i$ which is more appropriate for understanding of the whole process. $\xi$ is a number of hashes calculated by miners of a segment in order to find a $i$ hash and counted from the moment when the hash $(i − 1)$ was calculated. In other words, $\xi$ is an interval between two successful hash calculations expressed in a number of attempts rather than in minutes. Let the random variable $\xi$ be a number of hashes which must be calculated to solve a block.
 
 The benefit of using the random variable $\xi$ is that its probability distribution is known. In fact, the probability for $\xi = 1$ is equal to $s$. The probability for $\xi = 2$ is equal to $s(1−s)$. The probability for $\xi = 3$ is equal to $s(1 − s)^2$. And so on.
 
@@ -89,8 +82,6 @@ $$M\xi = 1 \cdot s + 2 \cdot s(1-s) + 3 \cdot s(1-s)^2 + ... = s (1 + 2(1-s) + 3
 A block is most likely to be solved by a first hash ($s > s(1 − s) > s(1 − s)^2 > ...$). However, the multiplier $(1−s)$ is so close to $1$ and $s$ value is so small that there will be no bias toward the first hash. The case shows that the expected value of hashes that miners will compute to solve a block is equal to $1/s$. The $s$ value is usually very small, and therefore, the $1/s$ value is very large. To illustrate this point, here is a current $s$ value in the Bitcoin network registered in January 2017:
 $$s = 0.0000000000000000000007506940164459079$$ 
 
-\normalsize
-
 Once again, the probability distribution of random variable $\xi$ is known. It goes as follows:
 $P(\xi = 1) = s, P(\xi = 2) = s(1 − s), P(\xi = 3) = s(1 − s)^2$ and so on.
 
@@ -98,7 +89,7 @@ We'll try to understand what affects the $s$ probability. The probability to sol
 
 $$s = \frac{\text{current target}}{2^{256}}$$
 
-Taking into account the unambiguous link\que{Сложность майнинга и target связаны следующей формулой: $$\text{difficulty} = \frac{C}{\text{target}}$$ The creator of Bitcoin has chosen the following value for $C = \text{0xffff}\underbrace{00...0}^{\text{51 раз}} = 15 \cdot 16^{55} + 15 \cdot 16^{54} + 15 \cdot 16^{53} + 15 \cdot 16^{52} =$ $= 16 \cdot 2^{220} + 16 \cdot 2^{216} + 16 \cdot 2^{212} + 16 \cdot 2^{208} - 2^{220} - 2^{216} - 2^{212} - 2^{208} =  2^{224} - 2^{208} \approx 2^{224}$} between target and difficulty, the result will be: $$ \label{sdiff} s = \frac{\text{current target}}{2^{256}} =\frac{2^{224}/\text{current difficulty}}{2^{256}} = \frac{1}{2^{32} \cdot \text{current difficulty}} $$
+Taking into account the unambiguous link\footnote{Сложность майнинга и target связаны следующей формулой: $$\text{difficulty} = \frac{C}{\text{target}}$$ The creator of Bitcoin has chosen the following value for $C = \text{0xffff}\underbrace{00...0}^{\text{51 раз}} = 15 \cdot 16^{55} + 15 \cdot 16^{54} + 15 \cdot 16^{53} + 15 \cdot 16^{52} =$ $= 16 \cdot 2^{220} + 16 \cdot 2^{216} + 16 \cdot 2^{212} + 16 \cdot 2^{208} - 2^{220} - 2^{216} - 2^{212} - 2^{208} =  2^{224} - 2^{208} \approx 2^{224}$} between target and difficulty, the result will be: $$ \label{sdiff} s = \frac{\text{current target}}{2^{256}} =\frac{2^{224}/\text{current difficulty}}{2^{256}} = \frac{1}{2^{32} \cdot \text{current difficulty}} $$
 
 It is clear that the probability to solve a block depends solely on difficulty value. Remember that we had previously made the assumption that, from the moment when the network split into segments till the moment when a node determines a segment as major or minor, the \textit{difficulty} value was not adjusted. With this assumption $s$ is a known constant.
 
@@ -145,7 +136,7 @@ $$ = \sum\limits_{j=0}^{\infty} (2j+1) x^j = 2\sum\limits_{j=0}^{\infty} j x^j +
 
 $$D\tau = M\tau^2 - (M\tau)^2 = \frac{1+x}{(1-x)^2} - \left(\frac{1}{1-x}\right)^2 = \frac{x}{(1-x)^2} $$
 
-$$D\tau = \frac{\left(1-s\right)^h}{\left(1-\left(1-s\right)^h\right)^2}$$
+<!-- $$D\tau = \frac{\left(1-s\right)^h}{\left(1-\left(1-s\right)^h\right)^2}$$ -->
 
 
 
@@ -156,9 +147,10 @@ Our plan is to calculate the probability $P(h_0 - \varepsilon < h < h_0 + \varep
 
 $T_1$, $T_2$, ..., $T_n$ are experimentally measured times when blocks were solved ($n$ equally distributed independent random variables).
 
-In order to compute the interval estimation for the parameter $h$, having experimentally known $T_1$, $T_2$, ..., $T_n$, we need to choose a function $g(\vec T, h)$ which meets two conditions\que{Функция с таким свойством называется \textit{центральной статистикой}.}: \begin{itemize}
-\item it depends monotonically on $h$ \item its distribution function does not depend on $h$.
-\end{itemize}
+In order to compute the interval estimation for the parameter $h$, having experimentally known $T_1$, $T_2$, ..., $T_n$, we need to choose a function $g(\vec T, h)$ which meets two conditions\footnote{Functions having this property are called _central statistics_.}: 
+
+* it depends monotonically on $h$
+* its distribution function does not depend on $h$.
 
 If you take $g(\vec T, h)$, which does not meet the second condition, the answer for $P(h_0 - \varepsilon < h < h_0 + \varepsilon)$ will depend on $h$. It means the failure to compute the interval estimation.
 
@@ -168,20 +160,18 @@ If you take $g(\vec T, h)$, which does not meet the second condition, the answer
 
 
 
-\begin{comment}
-Вычислим матожидание и дисперсию суммы этих случайных величин:
-$$M(T_1 + T_2 + ... + T_n) = \frac{n}{1 - (1-s)^h}$$
-$$D(T_1 + T_2 + ... + T_n) = \frac{n \left(1-s\right)^h}{\left(1-\left(1-s\right)^h\right)^2}$$
-\end{comment}
 
+Most probability distributions do not allow to construct this function, and the probability distribution for the random variable $\tau$ is no exception. So we have to use the central limit theorem. It establishes that (1) the sum $n$ of independent and identically distributed random variables tends toward a normal distribution with increasing $n$; (2) the expected value of the normal distribution equals to $n$ expected values of the random variables; (3) the variance of the normal distribution equals to $n$ variances of random variables. In other words, 
 
-Most probability distributions do not allow to construct this function, and the probability distribution for the random variable $\tau$ is no exception. So we have to use the central limit theorem. It establishes that (1) the sum $n$ of independent and identically distributed random variables tends toward a normal distribution with increasing $n$; (2) the expected value of the normal distribution equals to $n$ expected values of the random variables; (3) the variance of the normal distribution equals to $n$ variances of random variables. In other words, $$T_1 + T_2 + ... + T_n \xrightarrow{n\to\infty} N(n \cdot M\tau, n \cdot D\tau)$$
+$$T_1 + T_2 + ... + T_n \xrightarrow{n\to\infty} N(n \cdot M\tau, n \cdot D\tau)$$
 
-We consider a random variable $$\eta = \frac{\sum\limits_{i=1}^n T_i - n M\tau}{\sqrt{n D\tau}}$$ It tends to a \textit{standard} normal distribution, i.e. a normal distribution of $N(0,1)$. In fact, using the properties of expected value and variance, we get $$M\eta = M\left( \frac{\sum\limits_{i=1}^n T_i - n M\tau}{\sqrt{n D\tau}} \right) = M\left( \frac{\sum\limits_{i=1}^n T_i }{\sqrt{n D\tau}} \right) - M\left( \frac{n M\tau}{\sqrt{n D\tau}} \right) \xrightarrow{n\to\infty}  \frac{n \cdot M\tau}{\sqrt{n D\tau}} - \frac{n M\tau}{\sqrt{n D\tau}}   = 0$$
+We consider a random variable $$\eta = \frac{\sum\limits_{i=1}^n T_i - n M\tau}{\sqrt{n D\tau}}$$ It tends to a \textit{standard} normal distribution, i.e. a normal distribution of $N(0,1)$. In fact, using the properties of expected value and variance, we get 
+
+$$M\eta = M\left( \frac{\sum\limits_{i=1}^n T_i - n M\tau}{\sqrt{n D\tau}} \right) = M\left( \frac{\sum\limits_{i=1}^n T_i }{\sqrt{n D\tau}} \right) - M\left( \frac{n M\tau}{\sqrt{n D\tau}} \right) \xrightarrow{n\to\infty}  \frac{n \cdot M\tau}{\sqrt{n D\tau}} - \frac{n M\tau}{\sqrt{n D\tau}}   = 0$$
 
 $$D\eta = D\left( \frac{\sum\limits_{i=1}^n T_i - n M\tau}{\sqrt{n D\tau}} \right) = \frac{1}{nD\tau} D\left(\sum\limits_{i=1}^n T_i - n M\tau \right) = \frac{1}{nD\tau} D\left(\sum\limits_{i=1}^n T_i \right) \xrightarrow{n\to\infty} \frac{1}{nD\tau} \cdot (n \cdot D\tau) = 1.$$
 
-Next, we introduce notation $\overline{T} = (T_1 + T_2 + ... T_n)/n$ to facilitate further recording. Thus, according to the central limit theorem, the variable $(n\overline{T} - nM\tau)/\sqrt{n D\tau}$ tends to $N(0,1)$.
+Here I would like to denote $\overline{T} = (T_1 + T_2 + ... T_n)/n$ for convenience. Thus, according to the central limit theorem, the variable $(n\overline{T} - nM\tau)/\sqrt{n D\tau}$ tends to $N(0,1)$.
 
 We substitute $M\tau$ and $D\tau$ into the formula:
 
@@ -192,7 +182,7 @@ The distribution function of the random variable $\eta$ fortunately does not dep
 
 However, it is not that simple since the denominator $\sqrt{x}$ in (\ref{sqrtx}) gets in the way. Fortunately we can eliminate it.
 
-According to one of the properties of sample moments, the sample mean $\overline{T}$ is a consistent estimator for the expected value of the variable $T$. In other words, if $M|T| < \infty$, $\overline{T} \xrightarrow{p} MT$ as $n\to\infty$. 
+According to one of the properties of sample moments, the sample mean $\overline{T}$ is a consistent estimator for the expected value of the variable $T$. In other words, if $M |T| < \infty$, $\overline{T} \xrightarrow{p} MT$ as $n\to\infty$. 
 
 In this case $MT = 1/(1-x)$, so $$\overline{T} \xrightarrow{p} \frac{1}{1-x} \qquad\qquad \frac{1}{\overline{T}} \xrightarrow{p} 1-x \qquad\qquad 1 - \frac{1}{\overline{T}} \xrightarrow{p} x  $$ $$ \sqrt{\frac{\overline{T}-1}{\overline{T}}} \xrightarrow{p} \sqrt{x} \qquad\qquad \sqrt{\frac{\overline{T}}{\overline{T}-1}} \xrightarrow{p} \frac{1}{\sqrt{x}} \qquad\qquad \sqrt{\frac{x\overline{T}}{\overline{T}-1}} \xrightarrow{p} 1$$ 
 
@@ -210,11 +200,13 @@ Thus, $F_{\eta} (z) \equiv P(\eta < z)$ is known and does not depend on the para
 
 
 
-$$P(a < \eta < b)  = P(\eta < b) - P(\eta < a) = \int\limits_{-\infty}^b \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy - \int\limits_{-\infty}^a \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy = $$ $$ = \left( \int\limits_{-\infty}^0 \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy + \int\limits_0^b \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy \right) - \left( \int\limits_{-\infty}^0 \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy + \int\limits_0^a \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy \right)  = $$ $$ = \int\limits_0^b \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy - \int\limits_0^a \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy = \frac{1}{\sqrt{\pi}} \int\limits_0^{b/\sqrt{2}}  e^{-\frac{y^2}{2}} d\left(\frac{y}{\sqrt{2}}\right) - \frac{1}{\sqrt{\pi}} \int\limits_0^{a/\sqrt{2}}  e^{-\frac{y^2}{2}} d\left(\frac{y}{\sqrt{2}}\right) = $$ $$= \frac{1}{2} \left( \erf\left(\frac{b}{\sqrt{2}}\right) - \erf\left(\frac{a}{\sqrt{2}}\right) \right)$$
+$$P(a < \eta < b)  = P(\eta < b) - P(\eta < a) = \int\limits_{-\infty}^b \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy - \int\limits_{-\infty}^a \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy = $$ $$ = \left( \int\limits_{-\infty}^0 \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy + \int\limits_0^b \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy \right) - \left( \int\limits_{-\infty}^0 \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy + \int\limits_0^a \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy \right)  = $$ $$ = \int\limits_0^b \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy - \int\limits_0^a \frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}} dy = \frac{1}{\sqrt{\pi}} \int\limits_0^{b/\sqrt{2}}  e^{-\frac{y^2}{2}} d\left(\frac{y}{\sqrt{2}}\right) - \frac{1}{\sqrt{\pi}} \int\limits_0^{a/\sqrt{2}}  e^{-\frac{y^2}{2}} d\left(\frac{y}{\sqrt{2}}\right) = $$ $$= \frac{1}{2} \left( \text{erf}\left(\frac{b}{\sqrt{2}}\right) - \erf\left(\frac{a}{\sqrt{2}}\right) \right)$$
 
-While recording the answer we used the so-called \textit{error function}. It is a well-known integral that cannot be expressed in elementary functions. We recall that it is defined as $\erf(x) = \frac{2}{\sqrt{\pi}} \int\limits_0^x e^{-y^2} dy$
+While recording the answer we used the so-called \textit{error function}. It is a well-known integral that cannot be expressed in elementary functions. We recall that it is defined as $\text{erf}(x) = \frac{2}{\sqrt{\pi}} \int\limits_0^x e^{-y^2} dy$
 
-We record the result once again: \be\label{etaerf} P(a < \eta < b)  = \frac{1}{2} \left( \erf\left(\frac{b}{\sqrt{2}}\right) - \erf\left(\frac{a}{\sqrt{2}}\right) \right)\ee
+We record the result once again: 
+
+$$\label{etaerf} P(a < \eta < b)  = \frac{1}{2} \left( \text{erf}\left(\frac{b}{\sqrt{2}}\right) - \text{erf}\left(\frac{a}{\sqrt{2}}\right) \right) $$
 
 Now we recall that our goal is to obtain the interval estimate for variable $h$ rather than $\eta$. Solving the inequality with respect to $h$, we obtain
 
@@ -223,7 +215,7 @@ Now we recall that our goal is to obtain the interval estimate for variable $h$ 
  
 Thus, according to (\ref{etaerf}), we obtain
 
-\be\label{hestimated} \begin{aligned} P \left( \log_{1-s} \left( \frac{( \overline{T} - 1) - a\sqrt{\frac{\overline{T} - 1}{n\overline{T}}} }{\overline{T}} \right) < h < \log_{1-s} \left( \frac{( \overline{T} - 1) - b\sqrt{\frac{\overline{T} - 1}{n\overline{T}}} }{\overline{T}} \right) \right)  = \\  =  \frac{1}{2} \left( \erf\left(\frac{b}{\sqrt{2}}\right) - \erf\left(\frac{a}{\sqrt{2}}\right) \right) \end{aligned} \ee 
+$$ \label{hestimated} \begin{aligned} P \left( \log_{1-s} \left( \frac{( \overline{T} - 1) - a\sqrt{\frac{\overline{T} - 1}{n\overline{T}}} }{\overline{T}} \right) < h < \log_{1-s} \left( \frac{( \overline{T} - 1) - b\sqrt{\frac{\overline{T} - 1}{n\overline{T}}} }{\overline{T}} \right) \right)  = \\  =  \frac{1}{2} \left( \erf\left(\frac{b}{\sqrt{2}}\right) - \erf\left(\frac{a}{\sqrt{2}}\right) \right) \end{aligned} $$
 
 We are close to our goal --- we obtained the interval estimate for parameter $h$. Now we recall that we were interested in the interval estimate of $P(h_0 - \varepsilon < h < h_0 + \varepsilon)$ We select random numbers $a$ and $b$ so that the left part of (\ref{hestimated}) equals to $(h_0 - \varepsilon)$ and its right part equals to $(h_0 + \varepsilon)$.
 
@@ -249,7 +241,7 @@ $$
         
 We plug found $a$ and $b$ into (\ref{hestimated}):
 
-\be\label{withepsilon} \begin{gathered} P(h_0 - \varepsilon < h < h_0 + \varepsilon) = \\ = \frac{1}{2}  \erf\left( \left( (\overline{T} - 1) - \overline{T} (1-s)^{h_0 + \varepsilon} \right) \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}}  \right) - \frac{1}{2} \erf\left( \left( (\overline{T} - 1) - \overline{T} (1-s)^{h_0 - \varepsilon} \right) \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}} \right) \end{gathered} \ee
+$$ \label{withepsilon} P(h_0 - \varepsilon < h < h_0 + \varepsilon) = \frac{1}{2}  \text{erf} \left( \left( (\overline{T} - 1) - \overline{T} (1-s)^{h_0 + \varepsilon} \right) \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}}  \right) - \frac{1}{2} \text{erf} \left( \left( (\overline{T} - 1) - \overline{T} (1-s)^{h_0 - \varepsilon} \right) \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}} \right) $$
 
 We found the probability that the open interval $(h_0 - \varepsilon, h_0 + \varepsilon)$ includes the variable $h$. 
 
@@ -257,46 +249,58 @@ As noted above, we calculated $P(h_0 - \varepsilon < h < h_0 + \varepsilon)$ to 
 
 Therefore, we should find the limit
 
-$$L = \lim\limits_{\varepsilon \to 0} \frac{\frac{1}{2}  \erf\left( \left( (\overline{T} - 1) - \overline{T} (1-s)^{h_0 + \varepsilon} \right) \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}}  \right) - \frac{1}{2} \erf\left( \left( (\overline{T} - 1) - \overline{T} (1-s)^{h_0 - \varepsilon} \right) \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}} \right)}{2\varepsilon} = $$ $$=  \lim\limits_{\varepsilon \to 0} \frac{\erf \left(p - q (1-s)^{\varepsilon} \right) - \erf \left(p - q (1-s)^{-\varepsilon} \right)}{4\varepsilon},$$ where from the context it is clear what we denoted by $p$ and $q$.
+$$L = \lim\limits_{\varepsilon \to 0} \frac{\frac{1}{2}  \text{erf}\left( \left( (\overline{T} - 1) - \overline{T} (1-s)^{h_0 + \varepsilon} \right) \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}}  \right) - \frac{1}{2} \text{erf}\left( \left( (\overline{T} - 1) - \overline{T} (1-s)^{h_0 - \varepsilon} \right) \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}} \right)}{2\varepsilon} = $$ $$=  \lim\limits_{\varepsilon \to 0} \frac{\text{erf} \left(p - q (1-s)^{\varepsilon} \right) - \text{erf} \left(p - q (1-s)^{-\varepsilon} \right)}{4\varepsilon},$$ where from the context it is clear what we denoted by $p$ and $q$.
 
 Now we will work on the numerator of the limit. Using the [Taylor series of the error function](https://en.wikipedia.org/wiki/Error_function), we record:
 
 
-$$\erf \left(p - q (1-s)^{\varepsilon} \right) - \erf \left(p - q (1-s)^{-\varepsilon} \right) = \frac{2}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(-1)^n}{n! (2n+1)} \left[ \left( p - q (1-s)^{\varepsilon} \right)^{2n+1}  - \left( p - q (1-s)^{-\varepsilon} \right)^{2n+1} \right] = $$ $$= \frac{2}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(-1)^n}{n! (2n+1)} \left[ \left( p - q - \varepsilon q \ln(1-s) + o(\varepsilon) \right)^{2n+1}  - \left( p - q + \varepsilon q \ln(1-s) + o(\varepsilon) \right)^{2n+1} \right] = $$ $$= \frac{2}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(-1)^n}{n! (2n+1)} \left[ (2n+1) (p-q)^{2n} (-\varepsilon q \ln(1-s)) - (2n+1) (p-q)^{2n} \varepsilon q \ln(1-s) + o(\varepsilon) \right] = $$
+$$\text{erf} \left(p - q (1-s)^{\varepsilon} \right) - \text{er} \left(p - q (1-s)^{-\varepsilon} \right) = \frac{2}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(-1)^n}{n! (2n+1)} \left[ \left( p - q (1-s)^{\varepsilon} \right)^{2n+1}  - \left( p - q (1-s)^{-\varepsilon} \right)^{2n+1} \right] = $$ $$= \frac{2}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(-1)^n}{n! (2n+1)} \left[ \left( p - q - \varepsilon q \ln(1-s) + o(\varepsilon) \right)^{2n+1}  - \left( p - q + \varepsilon q \ln(1-s) + o(\varepsilon) \right)^{2n+1} \right] = $$ $$= \frac{2}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(-1)^n}{n! (2n+1)} \left[ (2n+1) (p-q)^{2n} (-\varepsilon q \ln(1-s)) - (2n+1) (p-q)^{2n} \varepsilon q \ln(1-s) + o(\varepsilon) \right] = $$
 $$= \frac{-4\varepsilon q \ln(1-s)}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(-1)^n}{n!} (p-q)^{2n}  + o(\varepsilon)= \frac{-4\varepsilon q \ln(1-s)}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(-1)^n ((p-q)^2)^n}{n!}  + o(\varepsilon) = $$ $$= \frac{-4\varepsilon q \ln(1-s)}{\sqrt{\pi}} \sum\limits_{n=0}^{\infty} \frac{(- (p-q)^2)^n}{n!}  + o(\varepsilon) =  \frac{-4\varepsilon q \ln(1-s)}{\sqrt{\pi}} \exp(- (p-q)^2) + o(\varepsilon)$$
 
 We finish calculating the limit:
 
-$$L = \lim\limits_{\varepsilon \to 0} \frac{\frac{-4\varepsilon q \ln(1-s)}{\sqrt{\pi}} \exp(- (p-q)^2) + o(\varepsilon)}{4\varepsilon} =  \frac{-q \ln(1-s)}{\sqrt{\pi}} \exp(- (p-q)^2).$$ Substituting $p$ and $q$ for expressions designated by them, we obtain $$ L =  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot \overline{T} (1-s)^{h_0} \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}}{2(\overline{T}-1)} (\overline{T} - 1 - \overline{T} (1-s)^{h_0})^2 \right)  $$ \be\label{ocenka} L =  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot  (1-s)^{h_0} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{h_0}\right)^2 \right)  \ee
+$$L = \lim\limits_{\varepsilon \to 0} \frac{\frac{-4\varepsilon q \ln(1-s)}{\sqrt{\pi}} \exp(- (p-q)^2) + o(\varepsilon)}{4\varepsilon} =  \frac{-q \ln(1-s)}{\sqrt{\pi}} \exp(- (p-q)^2).$$ 
+
+Substituting $p$ and $q$ for expressions designated by them, we obtain $$ L =  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot \overline{T} (1-s)^{h_0} \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}}{2(\overline{T}-1)} (\overline{T} - 1 - \overline{T} (1-s)^{h_0})^2 \right)  $$ 
+
+$$ \label{ocenka} L =  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot  (1-s)^{h_0} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{h_0}\right)^2 \right)  $$
 
 
 
 
-###### Computing interval estimate for share of computational capacity of a segment
+#### Computing interval estimate for share of computational capacity of a segment
 
-Computing the interval estimate for the unknown $h$ is an obvious thing. But since a node determines a segment as major or minor it is more convenient to provide the interval estimate of the variable $p$. The variable $p$ denotes the share of computational capacity of a segment (compared to the capacity of the entire network before the split occurred) that is expressed as a percentage. Thus \be p = \frac{h}{H} \cdot 100\ee By definition, $0 < p < 100$.
+Computing the interval estimate for the unknown $h$ is an obvious thing. But since a node determines a segment as major or minor it is more convenient to provide the interval estimate of the variable $p$. The variable $p$ denotes the share of computational capacity of a segment (compared to the capacity of the entire network before the split occurred) that is expressed as a percentage. Thus 
+
+$$ p = \frac{h}{H} \cdot 100 $$ 
+
+(By definition, $0 < p < 100$.)
 
 We have $$P(h_0 - \varepsilon < h < h_0 + \varepsilon) = P\left(h_0 - \varepsilon < \frac{pH}{100} < h_0 + \varepsilon\right) = $$ $$= P\left( \frac{100}{H} h_0 - \frac{100}{H} \varepsilon < p < \frac{100}{H} h_0 + \frac{100}{H} \varepsilon \right) = P(p_0 - \epsilon < p < p_0 + \epsilon)$$ 
 
-(Here we introduced the notation $\frac{100}{H} h_0  = p_0$, $\frac{100}{H} \varepsilon = \epsilon$). Then
+(Here we introduced the notation $\frac{100}{H} h_0  = p_0$, $\frac{100}{H} \varepsilon = \epsilon$.) Then
 
-$$\lim\limits_{\epsilon \to 0} \frac{P(p_0 - \epsilon < p < p_0 + \epsilon)}{2\epsilon} = \lim\limits_{\epsilon \to 0} \frac{P(h_0 - \varepsilon < h < h_0 + \varepsilon)}{2\epsilon} =$$ $$= \lim\limits_{\epsilon \to 0} \frac{P(h_0 - \varepsilon < h < h_0 + \varepsilon)}{2\varepsilon} \frac{H}{100} = \lim\limits_{\varepsilon \to 0} \frac{P(h_0 - \varepsilon < h < h_0 + \varepsilon)}{2\varepsilon} \frac{H}{100} = $$ $$=  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot  (1-s)^{h_0} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{h_0}\right)^2 \right) \cdot  \frac{H}{100}$$ $$=  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot  (1-s)^{\frac{p_0 H}{100}} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{\frac{p_0 H}{100}}\right)^2 \right) \cdot  \frac{H}{100}$$
+$$\lim\limits_{\epsilon \to 0} \frac{P(p_0 - \epsilon < p < p_0 + \epsilon)}{2\epsilon} = \lim\limits_{\epsilon \to 0} \frac{P(h_0 - \varepsilon < h < h_0 + \varepsilon)}{2\epsilon} =$$ 
+
+$$= \lim\limits_{\epsilon \to 0} \frac{P(h_0 - \varepsilon < h < h_0 + \varepsilon)}{2\varepsilon} \frac{H}{100} = \lim\limits_{\varepsilon \to 0} \frac{P(h_0 - \varepsilon < h < h_0 + \varepsilon)}{2\varepsilon} \frac{H}{100} = $$ $$=  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot  (1-s)^{h_0} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{h_0}\right)^2 \right) \cdot  \frac{H}{100}$$ 
+
+$$=  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot  (1-s)^{\frac{p_0 H}{100}} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{\frac{p_0 H}{100}}\right)^2 \right) \cdot  \frac{H}{100}$$
 
 
 Or, which is the same,
 
-\be\label{ocenkap} \boxed{ \rho(p) =  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot (1-s)^{\frac{pH}{100}} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{\frac{pH}{100}} \right)^2 \right) \cdot  \frac{H}{100} } \quad\quad\ee
+$$ \label{ocenkap} \boxed{ \rho(p) =  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot (1-s)^{\frac{pH}{100}} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{\frac{pH}{100}} \right)^2 \right) \cdot  \frac{H}{100} } \quad\quad $$
 
 This is the required formula for the probability density function that determines if the unknown variable $p$ gets into the interval $(p_0 - \epsilon, p_0 + \epsilon)$, $\epsilon \to 0$.
 
 
 
 
-###### Validity check
+#### Validity check
 
 Let's check the validity of probability density distribution, i.e. let's check that $$\int\limits_0^{100} \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot (1-s)^{\frac{pH}{100}} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{\frac{pH}{100}} \right)^2 \right) \cdot  \frac{H}{100} dp = 1$$
 
-Имеем: $$I = \int\limits_0^{100} \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot (1-s)^{\frac{pH}{100}} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{\frac{pH}{100}} \right)^2 \right) \cdot  \frac{H}{100} dp = $$ $$= \left[ u = \frac{pH}{100} \right] = \frac{-\ln(1-s)}{\sqrt{\pi}} \int\limits_0^{H}  (1-s)^u \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^u \right)^2 \right) du =$$
+We have: $$I = \int\limits_0^{100} \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot (1-s)^{\frac{pH}{100}} \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{\frac{pH}{100}} \right)^2 \right) \cdot  \frac{H}{100} dp = $$ $$= \left[ u = \frac{pH}{100} \right] = \frac{-\ln(1-s)}{\sqrt{\pi}} \int\limits_0^{H}  (1-s)^u \sqrt{\frac{n\overline{T}^3}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^u \right)^2 \right) du =$$
 
 $$=  \left[ \beta = \frac{n\overline{T}^3}{2(\overline{T}-1)} \right]  = \left[ \gamma = \frac{\overline{T}-1}{\overline{T}} \right] = \frac{-\ln(1-s)}{\sqrt{\pi}}  \int\limits_0^{H}  (1-s)^u \sqrt{\beta}  \cdot \exp\left(- \beta \left(\gamma - (1-s)^u \right)^2 \right) du = $$ $$= \left[ c^u du = \frac{d(c^u)}{\ln(c)} \right] = \frac{-\ln(1-s)}{\sqrt{\pi}}  \int\limits_1^{(1-s)^H}  \sqrt{\beta}  \cdot \exp\left(- \beta \left(\gamma - (1-s)^u \right)^2 \right) \frac{d\left((1-s)^u\right)}{\ln(1-s)} =  \left[ v = (1-s)^u \right] =$$ $$= \frac{-1}{\sqrt{\pi}} \int\limits_1^{(1-s)^H}  \sqrt{\beta}  \cdot \exp\left(- \beta \left(\gamma - v \right)^2 \right) dv = \frac{1}{\sqrt{\pi}} \int\limits_{(1-s)^H}^1  \sqrt{\beta}  \cdot \exp\left(- \beta \left(\gamma - v \right)^2 \right) dv $$
 
@@ -308,90 +312,97 @@ $$=  \left[ \beta = \frac{n\overline{T}^3}{2(\overline{T}-1)} \right]  = \left[ 
 
 $$sH\overline{T} > 1 \qquad \longrightarrow \qquad sH > \frac{1}{\overline{T}} \qquad \longrightarrow \qquad 1 - sH < 1 - \frac{1}{\overline{T}}$$ 
 
-Теперь воспользуемся возможностью использовать ряд Тейлора: поскольку\que{Условие $sH \ll 1$ действительно выполнено. Действительно, $s$ --- вероятность найти новый блок следующим хэшем, $H$ --- количество вычисляемых сетью до распада хэшей в секунду (хэшрейт сети до распада), $sH$ --- маожидание количества блоков, которые будут найдены за следующую секунду. Во всех реалистичных случаях среднее время поиска блока превышает секунду, причём значительно.} $sH \ll 1$, верно $(1-s)^H \approx 1 - sH$. Поэтому $$1 - sH < 1 - \frac{1}{\overline{T}} \qquad \longrightarrow \qquad (1-s)^H < \frac{\overline{T}-1}{\overline{T}} \qquad \longrightarrow \qquad (1-s)^H < \gamma$$
+Теперь воспользуемся возможностью использовать ряд Тейлора: поскольку\footnote{Условие $sH \ll 1$ действительно выполнено. Действительно, $s$ --- вероятность найти новый блок следующим хэшем, $H$ --- количество вычисляемых сетью до распада хэшей в секунду (хэшрейт сети до распада), $sH$ --- маожидание количества блоков, которые будут найдены за следующую секунду. Во всех реалистичных случаях среднее время поиска блока превышает секунду, причём значительно.} $sH \ll 1$, верно $(1-s)^H \approx 1 - sH$. Поэтому $$1 - sH < 1 - \frac{1}{\overline{T}} \qquad \longrightarrow \qquad (1-s)^H < \frac{\overline{T}-1}{\overline{T}} \qquad \longrightarrow \qquad (1-s)^H < \gamma$$
 
-При $\beta \to\infty$ выражение $\sqrt{\beta/\pi} \exp(-\beta(\gamma - v)^2)$ стремится к $\delta(\gamma - v)$, где $\delta(...)$ --- \href{https://ru.wikipedia.org/wiki/Дельта-функция}{\textcolor[rgb]{0,0,1}{дельта-функция Дирака}}. Таким образом, при достаточно больших $n$ и $\overline{T}$ $$I \xrightarrow{n\to\infty} \int\limits_{(1-s)^H}^1 \delta(\gamma - v) dv = 1,$$ т.к. значение $\gamma$ лежит внутри интервала $((1-s)^H,1)$.
+При $\beta \to\infty$ выражение $\sqrt{\beta/\pi} \exp(-\beta(\gamma - v)^2)$ стремится к $\delta(\gamma - v)$, где $\delta(...)$ --- [Dirac delta function](https://en.wikipedia.org/wiki/Dirac_delta_function). Таким образом, при достаточно больших $n$ и $\overline{T}$ $$I \xrightarrow{n\to\infty} \int\limits_{(1-s)^H}^1 \delta(\gamma - v) dv = 1,$$ т.к. значение $\gamma$ лежит внутри интервала $((1-s)^H,1)$.
 
 
 
-###### Pictures, pictures
 
-В целях наглядности мы хотим изобразить ответ (\ref{ocenkap}) графически. Поскольку формула (\ref{ocenkap}) содержит целых четыре параметра, для упрощения этой цели два из них --- $s$ и $H$ --- возьмём равными соответствующим текущим значениям для сети Биткойн. Взяв из открытых источников текущее значение \textit{сложности} биткойн-майнинга $\text{diff} \approx 3.1 \cdot 10^{11}$, с помощью формулы (\ref{sdiff}) можно получить
-$$s \approx 0.0000000000000000000007506940164459079,$$ и тогда для выражения $-\ln(1-s)$ имеем $$-\ln(1-s) \approx 7.50694 \cdot 10^{-22}$$
+#### Pictures, pictures
 
-Хэшрэйт сети Биткойн также легко найти из открытых источников; на начало января 2017 он составляет $$H = 2.4 \cdot 10^{18}$$
+For visibility, we want to provide graphical interpretation of (\ref{ocenkap}). Since (\ref{ocenkap}) has four parameters ($s$, $H$, $n$, $p$), for that purpose, we have to fix at least two of them. We take $s$ and $H$ equal to their current values in Bitcoin network. Given the fact Bitcoin mining difficulty is $\approx 3.1 \cdot 10^{11}$ at the moment, using (\ref{sdiff}) one can obtain
 
-хэшей в секунду. Таким образом, на начало января 2017-го $(1-s)^H \approx 0.998196$. Величина $s$, впрочем, так зависит от величины $H$ (обратно пропорциональна ей), что число $(1-s)^H$ в любом случае не может испытывать сильных колебаний (при больших $H$ выражение $(1-s)^H$ очень близко к экспоненте от малой отрицательной константы). 
+$$s \approx 0.0000000000000000000007506940164459079,$$ 
 
-Теперь, после подстановки $s$ и $H$, формула (\ref{ocenkap}) зависит лишь от двух параметров: $\overline{T}$ и $n$. Построим первый из графиков. В случае среднего времени обнаружения нового блока в сегменте, равного 20 минутам (случай $\overline{T} = 20 \cdot 60 = 1200$), имеем такое графическое представление плотности вероятности:
+thus $$-\ln(1-s) \approx 7.50694 \cdot 10^{-22}$$
 
-%Для $\frac{\overline{T} - 1}{\overline{T}} = \frac{599}{600} \approx 0.998333$
+Current Bitcoin hashrate is also easy to extract from open sources; for late Dec 2016 it is
 
-%Ещё раз исследуем интеграл для полной вероятности $$I = \frac{1}{\sqrt{\pi}} \int\limits_{(1-s)^H}^1  \sqrt{\beta}  \cdot \exp\left(- \beta \left(\gamma - v \right)^2 \right) dv,$$ который мы обсуждали в прошлом разделе. 	
+$$H = 2.4 \cdot 10^{18}$$
 
-%Скажем, если от сети отделился небольшой кусок (и наш сегмент, имея ранее мощность $p=100$ процентов, стал иметь мощность $p=99$ процентов)
+hashes per second. Finally, for late Dec 2016 $(1-s)^H \approx 0.998196$. Generally speaking, since $s$ is inverse proportional to $H$, $(1-s)^H$ cannot fluctuate significantly (for huge $H$ the expression $(1-s)^H$ is close to exponent of a small negative constant). 
+
+
+After $s$ and $H$ are set equal to their current Bitcoin values, the expression (\ref{ocenkap}) depends only on two parameters: $\overline{T}$ and $n$. Let us plot a graph. In case of average block time equal to 20 minutes ($\overline{T} = 20 \cdot 60 = 1200$), here's what we have for probability density:
+
 
 [ural20.png]
 
-Так и должно было быть, потому что в Биткойн нормальное среднее время поиска нового блока --- $10$ минут. Если среднее время поиска нового блока вдруг начало стабильно на протяжении долгого времени составлять $20$ минут, то это означает, что сеть распалась, и доля нашего сегмента близка к 50\%, что и видно на графике. (Другой сегмент при этом тоже добывает блоки в среднем раз в $20$ минут, в среднем вся сеть --- раз в $10$ минут.) Заметим, что формула (\ref{ocenkap}), по которой мы построили график, не содержит среднего времени поиска нового блока в Биткойн, равного $10$ минутам, и тем не менее график выглядит безошибочным. Это дополнительно свидетельствует о корректности формулы (\ref{ocenkap}).
 
-Ясно также, что чем выше $n$, тем выше наша степень уверенности в том или ином значении $p$ (тем меньше дисперсия и тем более локализованным вокруг некоторого значения выглядит гауссов колокол).
+It is how it's supposed to be, since in Bitcoin average block time is $10$ minutes. If block time seems to get localized around $20$ minutes, then the entire network decayed into segments, and our segment constitutes roughly 50% — and this is what our plot shows. Note that the expression (\ref{ocenkap}), used for this plot, does not have average Bitcoin block time, but plot turned out to be correct anyway. This is another correctness sign of (\ref{ocenkap}).
 
-Что будет, если от основной сети откололся лишь незначительный кусок майнеров? Такое, кстати, происходит каждый день, ведь майнеры по разным причинам (в основном вынужденно) время от времени отключают свои мощности.
+Clearly, the higher $n$, the more confident we are in our estimate of $p$ (the less is variance and the more localized around a certain value is the Gauss bell).
 
-Увидим, как устроена вероятность того, что мы попали в сегмент с той или иной вычислительной мощностью $p$, для экспериментально измеряемого среднего времени обнаружения нового блока в $11$ минут ($\overline{T} = 11 \cdot 60 = 660$). Заметим, что раз $11$ очень близко к $10$, следует ожидать существенного смещения плотности вероятности к $p = 100$.
+Ok. Now, the next question is: what happens if a small segment of miners breaks away? This happens from time to time when miners turn off their mining rigs under various reasons.
+
+Let's see the probability of us entering the segment of computation power $p$ in case experimentally measured block time is $11$ minutes ($\overline{T} = 11 \cdot 60 = 660$). Since $11$ is pretty close to $10$, one should expect the significant shift of probability density to $p = 100$.
 
 ![alt text](https://garkoosha.me/ural11.png)
 
-
-Мы видим совершенно логичную историю и можем сделать оценку $p>80$ (или, в случае консервативной оценки, $p>60$). Поскольку среднее время обнаружения нового блока в $11$ минут мало чем отличается от штатного среднего времени в $10$, для этих значений $n$ функция плотности вероятности локализована вокруг $p \approx 80$ не так хорошо, как на предыдущем графике. Другое дело ситуация с б\'{о}льшими значениями $n$. В этом случае можно с большей достоверностью сделать вывод, что это нештатная ситуация и что действительно произошёл шардинг:
+This is predictable; we can make estimate  $p>80$ (or, in case of more conservative estimate, $p>60$). Поскольку среднее время обнаружения нового блока в $11$ минут мало чем отличается от штатного среднего времени в $10$, для этих значений $n$ функция плотности вероятности локализована вокруг $p \approx 80$ не так хорошо, как на предыдущем графике. Another case is high $n$. Then one could tell with higher reliability that this is abnormal situation and the decay has happened:
 
 ![alt text](https://garkoosha.me/ural1111.png)
 
-Хорошо, со средним временем поиска нового блока в $11$ минут всё ясно. Как выглядит распределение вероятности по значениям $p$, если среднее время поиска нового блока, напротив, гораздо выше ожидаемых $10$ минут --- скажем, для примера, $40$ минут?
+Ok, done with $11$ minutes average block time case. How does probability distribution look when the average block time is much higher than the expected $10$ minutes --- e.g. $40$ minutes?
 
-Возьмём $\overline{T} = 40 \cdot 60 = 2400$ и построим график:
+Taking $\overline{T} = 40 \cdot 60 = 2400$ and plotting:
 
 ![alt text](https://garkoosha.me/ural40.png)
 
-Нам даже пришлось изменить масштаб, чтобы график влез в полную высоту. Действительно, видим, что доля $p$ довольно близка к 25\%, как и должно было быть. С увеличением $n$ степень достоверности увеличивается.
+We even had to change the scale to fit this plot. We see $p$ is close to 25%, as it should be. The higher $n$, the narrower Gaussian bell is.
 
-Кстати, о масштабе. Как выглядят все эти графики при очень больших $n$?
+Speaking of scale, how will those plots look for huge $n$?
 
 ![alt text](https://garkoosha.me/ural4000.png)
 
-Как и должно быть, при больших разных $n$ особенных различий между $n$ и $(n-1)$ нет, и все графики сливаются в один. Интервал по горизонтальной оси, при котором график отличен от нуля, как мы видим, достаточно широк (на глаз, $15 < p < 30$), и нет ничего удивительного в том, что площадь под этим графиком, несмотря на малые значения плотности вероятности, равна единице (как и должно быть для \textit{суммарной вероятности} --- интеграла от плотности вероятности).
+As expected, for huge $n$ there is not much difference between $n$ and $(n-1)$, and all plots coincide. The interval in $p$ where function is significantly above zero, is wide enough ($15 < p < 30$), and there's nothing surprising in the fact that total area under this function is equal to one (as it should be for _total probability_ which is the integral of probability density function). 
 
-Попытаемся, однако, понять, при каких $n$ гауссов колокол настолько локализован, что напоминает обсуждавшуюся выше в этом контексте $\delta$-функцию Дирака.
+Ok, now let's see if our Gauss bell resembles Dirac $\delta$-function in case of large $n$.
+
+
 
 ![alt text](https://garkoosha.me/ural2017.png)
 
+As expected, for huge $n$ Gauss bell degenerates to a Dirac $\delta$-function. In practice, one shouldn't wait for too many blocks, maximizing $n$; several blocks are enough to tell $p$ is well-localized around a certain value. 
 
-Как и ожидалось, при очень больших $n$ гауссов колокол вырождается в $\delta$-функцию Дирака. Дожидаться таких $n$, конечно, не нужно на практике; даже при не очень больших значениях $n$, начиная с какого-то момента, ясно, вокруг какого $p$ происходит локализация гауссова колокола.
 
 
 
 #### Determining a segment as major or minor for different $N$
 
-We recall that N designates a number of disparate segments into which the network divided as a result of a temporary technical malfunction. However, even if the time to solve a block leads to the conclusion that a segment has, for instance, only 40\% of the previous computational capacity, if $N > 2$, it does not mean that we ended up in the minor block chain. If there are 20 segments, 40\% of the computational capacity of a segment indicate that the block chain is likely to be major.
+We recall that N designates a number of disparate segments into which the network divided as a result of a temporary technical malfunction. However, even if the time to solve a block leads to the conclusion that a segment has, for instance, only 40\% of the previous computational capacity, if $N > 2$, it does not mean that we ended up in the minor block chain. If there are 20 segments, 40% of the computational capacity of a segment indicate that the block chain is likely to be major.
 
 Unfortunately, in order for a node to determine its segment as major or minor, it must be aware of a number of segments into which the network divided. There is no way to circumvent this requirement. In a real situation a node will have to make a decision based on geographic particularities. Thus, it will have to try to connect to any IP-address. To avoid the situation it is necessary to record in advance IP-addresses of miners. Therefore, we should compute estimates for each $N$.
 
-What is clear is that when a segment holds more than 50\% of the computational capacity, it is definitely major.
+What is clear is that when a segment holds more than 50% of the computational capacity, it is definitely major.
 
 
-###### Case $N=2$
+##### Case $N=2$
 
-If the initial network splits into two segments, then: \begin{itemize} \item if our segment has less than 50\% of the computational capacity of the previously single network, it is definitively minor \item if our segment has more than 50\% of the computational capacity of the previously single network, it is definitely major. \end{itemize} Therefore, it is easy to find the probability that the segment is major:
+If the initial network splits into two segments, then: 
+* if our segment has less than 50% of the computational capacity of the previously single network, it is definitively minor
+* if our segment has more than 50% of the computational capacity of the previously single network, it is definitely major. 
+Therefore, it is easy to find the probability that the segment is major:
 
 $$ p_{\text{maj}} = \int\limits_{50}^{100} \rho(p) dp $$
 
-###### Case $N=3$
+##### Case $N=3$
 
-If there are three sectors, the situation is more complicated. Both 35\% and 40\% can determine a segment as major. Assuming that there is no additional data (in real life it is often possible to estimate how computational capacities might had been distributed across regions with which we have lost connection), we set a problem and solve it. The problem is the following: <<Let $p$\% be a share of the computational capacity of a segment. Find the probability that we are in a major blockchain>>.
+If there are three sectors, the situation is more complicated. Both 35\% and 40\% can determine a segment as major. Assuming that there is no additional data (in real life it is often possible to estimate how computational capacities might had been distributed across regions with which we have lost connection), we set a problem and solve it. The problem is the following: <<Let $p$% be a share of the computational capacity of a segment. Find the probability that we are in a major blockchain>>.
 
 
-It is clear that if the computational capacity of the first segment is less than $\frac{100}{3}$\% then other segments definitely have a much greater computational capacity. In other words, the blockchain is minor. It is also clear that if the computational capacity of the first segment has more than 50\%, the blockchain is major. So the case to consider is $\frac{100}{3} \leqslant p \leqslant 50$.
+It is clear that if the computational capacity of the first segment is less than $\frac{100}{3}$% then other segments definitely have a much greater computational capacity. In other words, the blockchain is minor. It is also clear that if the computational capacity of the first segment has more than 50%, the blockchain is major. So the case to consider is $\frac{100}{3} \leqslant p \leqslant 50$.
 
 So we are in a minor blockchain if one of the other two segments has the share of computational capacity that exceeds $p$. And we are in a major blockchain if no segment has the share that exceeds $p$. We denote percentage values of computational capacities of the other two segments by $x_1$ and $x_2$. Since $p + x_1 + x_2 = 100$, the constraint $x_1 + x_2 = 100 - p$ holds.
 
@@ -415,22 +426,22 @@ $$
         \end{array} \right.
 $$
 
-That is, we are in the major block chain if and only if $100 - 2p < x_1 < p$. The length of this interval is equal to$p - (100-2p) = 3p - 100$. The value of $x_1$ cannot be less than $0$ and more than $(100-p)$ so the fraction that this interval represents among all the possible values of $x_1$ equals to $(3p-100)/(100-p)$. According to our assumptions, all the possible values of $x_1$ are equally probable, so $(3p-100)/(100-p)$ is the probability that the block chain is major if $\frac{100}{3} \leqslant p \leqslant 50$.
+That is, we are in the major chain if and only if $100 - 2p < x_1 < p$. The length of this interval is equal to $p - (100-2p) = 3p - 100$. The value of $x_1$ cannot be less than $0$ and more than $(100-p)$ so the fraction that this interval represents among all the possible values of $x_1$ equals to $(3p-100)/(100-p)$. According to our assumptions, all the possible values of $x_1$ are equally probable, so $(3p-100)/(100-p)$ is the probability that the block chain is major if $\frac{100}{3} \leqslant p \leqslant 50$.
 
 We record the probability that the blockchain is major $$V(p) = \left\{ \begin{array}{ll}
-        0, \hskip 20 pt & \text{если} \: p < 100/3 \\
+        0, \hskip 20 pt & \text{if} \: p < 100/3 \\
         (3p-100)/(100-p), \hskip 20 pt & \text{если} \: 100/3 \leqslant p \leqslant 50 \\
-        1, \hskip 20 pt & \text{если} \: p > 50.
+        1, \hskip 20 pt & \text{if} \: p > 50.
         \end{array} \right.$$
         
 In accordance with probability multiplication theorem, we have to integrate the product of $\rho(p)$ and $V(p)$ with respect to $p$ in order to get an answer to the problem (the probability to get into the major sector):
  
 $$ p_{\text{maj}} = \int\limits_0^{100} \rho(p) \cdot V(p) \: dp = \int\limits_0^{100/N} \rho(p) \cdot 0 \: dp + \int\limits_{100/N}^{50} \rho(p) \cdot \frac{3p-100}{100-p} \: dp + \int\limits_{50}^{100} \rho(p) \cdot 1 \: dp $$
 
-\be p_{\text{maj}} = \int\limits_{100/N}^{50} \rho(p) \cdot \frac{3p-100}{100-p} \: dp + \int\limits_{50}^{100} \rho(p) \: dp \ee
+$$ p_{\text{maj}} = \int\limits_{100/N}^{50} \rho(p) \cdot \frac{3p-100}{100-p} \: dp + \int\limits_{50}^{100} \rho(p) \: dp $$
 
 
-###### Case $N=4$
+##### Case $N=4$
 
 
 As in the last case, if our share of network is less than $25$\%, then one of other connected components has computational power bigger than ours, i.e. our segment is minor. Clearly, if our share of network is bigger than $50$\%, our segment is major. The only case left to consider is $25 \leqslant p \leqslant 50$.
@@ -460,14 +471,14 @@ $$
 
 Two independent variables are here: $x_1$ and $x_2$, each of which may have values starting with $0$ but no more than $(100-p)$. If one draws a square with side $(100-p)$, each of its points will be in 1-to-1 correspondence with a pair of values $(x_1, x_2)$, thus uniquely determining hashrates of each of network segments. The set of admissible pairs $(x_1, x_2)$ has the area of $(100-p)^2$; some people would say that \textit{phase space volume} here is equal $(100-p)^2$.
 
-The question of how to satisfy $x_1 < p$, $x_2 < p$, $x_1 + x_2 > 100-2p$ is the question of determining part of the square, bounded by these inequalities. It can be solved either by plane geometry methods (calculating area of the right triangle) or by calculating double integral $\iint\limits_D dx_1 dx_2$ with respect to the area $D = \{x_1, x_2 |  x_1 < p, x_2 < p, x_1 + x_2 > 100-2p  \}$. 
+The question of how to satisfy $x_1 < p$, $x_2 < p$, $x_1 + x_2 > 100-2p$ is the question of determining part of the square, bounded by these inequalities. It can be solved either by plane geometry methods (calculating area of the right triangle) or by calculating double integral $\iint\limits_D dx_1 dx_2$ with respect to the area $D = {x_1, x_2 |  x_1 < p, x_2 < p, x_1 + x_2 > 100-2p}$. 
 
 Instead of calculating this double integral, we move to the case of arbitrary $N$ right away.
 
 
-###### Arbitrary $N$ case
+##### Arbitrary $N$ case
 
-В общем случае задача сводится ко взятию $(N-2)$-кратного интеграла $\iint\limits_D dx_1 dx_2 ... dx_{N-2}$ по области $$D = \{x_1, x_2, ..., x_{N-2} |\:  x_1 < p,\: x_2 < p,\: ...,\: x_{N-2} < p,\: x_1 + x_2 + ... + x_{N-2} > 100-2p  \}.$$
+В общем случае задача сводится ко взятию $(N-2)$-кратного интеграла $\iint\limits_D dx_1 dx_2 ... dx_{N-2}$ по области $$D = {x_1, x_2, ..., x_{N-2} |\:  x_1 < p,\: x_2 < p,\: ...,\: x_{N-2} < p,\: x_1 + x_2 + ... + x_{N-2} > 100-2p  	} .$$
 
 
 $$
@@ -486,8 +497,7 @@ $$
         ... \\
         100-p - x_1 -x_2 - ... - x_{N-2} < p \\
         \end{array} \right.
-        \Longrightarrow $$
-$$ \Longrightarrow 
+        \Longrightarrow 
 \left\{  \begin{array}{ll}
         x_1 + x_2 + ... + x_{N-1} = 100 - p \\
         x_1 < p \\
@@ -509,12 +519,12 @@ $$
         \end{array} \right.
 $$
 
-the solution is fortunately [known](http://math.stackexchange.com/questions/454583/volume-of-cube-section-above-intersection-with-plane). And here it is: $$\label{unit} V = 1 - \sum\limits_{i=0}^{\text{floor} (\alpha)} (-1)^i C^i_{N-2} \frac{(\alpha - i)^{N-2}}{(N-2)!} $$
+the solution is fortunately [known](http://math.stackexchange.com/questions/454583/volume-of-cube-section-above-intersection-with-plane): $$\label{unit} V = 1 - \sum\limits_{i=0}^{\text{floor} (\alpha)} (-1)^i C^i_{N-2} \frac{(\alpha - i)^{N-2}}{(N-2)!} $$
 
-Our cube, however, has a side equal to $p$, not to $1$. By similarity transformation we turn to unit, to be able to use (\ref{unit}). Clearly, to do this, we scale every of its sides to make them $p$ times less. The coefficient $(100-2p)$, thanks to linearity of $x_1 + x_2 + ... + x_{N-2}$, will be scaled down as well exactly by $p$ times. Thus, $\alpha = (100-2p)/p$.
+Our cube is, however, not unit cube and has edge of $p$. By similarity transformation we turn to unit, to be able to use (\ref{unit}). Clearly, to do this, we scale every of its sides to make them $p$ times less. The coefficient $(100-2p)$, thanks to linearity of $x_1 + x_2 + ... + x_{N-2}$, will be scaled down as well exactly by $p$ times. Thus, $\alpha = (100-2p)/p$.
 
 Applying (\ref{unit}) to our case, and not forgetting to go back to the original cube with side $p$ (to multiply by $p^{N-2}$), we obtain
-\be\label{almost} V = p^{N-2} \left( 1 - \sum\limits_{i=0}^{\text{floor} (100/p) - 2} (-1)^i C^i_{N-2} \frac{(\frac{100-2p}{p} - i)^{N-2}}{(N-2)!} \right) \ee
+$$\label{almost} V = p^{N-2} \left( 1 - \sum\limits_{i=0}^{\text{floor} (100/p) - 2} (-1)^i C^i_{N-2} \frac{(\frac{100-2p}{p} - i)^{N-2}}{(N-2)!} \right) $$
 
 To regain the final answer we are about to recall that it's not the quantity but the share of majority-giving outcomes matters. Each of the variables $x_1$, $x_2$, ..., $x_{N-2}$ may have any value starting with $0$ and no more than $(100-p)$, thus giving $(100-p)^{N-2}$ for the volume of possible distributions space.
 
@@ -524,11 +534,11 @@ $$ V(p) = \left(\frac{p}{100-p}\right)^{N-2} \left( 1 - \sum\limits_{i=0}^{\text
 
 This is the correct answer for $p$ satisfying $100/N \leqslant p \leqslant 50$ condition. Earlier we have come to the fact that for $p>50$ the probability of being in a major chain is $1$, and for  $p < 100/N$ it is equal to $0$. That said, final answer is
 
-\be\label{V} \boxed{V(p) = \left\{ \begin{array}{ll}
+$$ \label{V} \boxed{V(p) = \left\{ \begin{array}{ll}
         0, \hskip 3 pt & \text{если} \: p < 100/N \\
         \left(\frac{p}{100-p}\right)^{N-2} \left( 1 - \sum\limits_{i=0}^{\text{floor} (100/p) - 2} (-1)^i C^i_{N-2} \frac{(\frac{100-2p}{p} - i)^{N-2}}{(N-2)!} \right), \hskip 3 pt & \text{если} \: 100/N \leqslant p \leqslant 50 \\
         1, \hskip 3 pt & \text{если} \: p > 50.
-        \end{array} \right.}\quad\quad\quad\quad\ee
+        \end{array} \right.}\quad\quad\quad\quad $$
 
 
 
@@ -540,17 +550,23 @@ This is the correct answer for $p$ satisfying $100/N \leqslant p \leqslant 50$ c
 
 The final answer for probability is
 
-%\be p_{\text{maj}} = \int\limits_{100/N}^{50} V(p) \pi(p) dp + \int\limits_{50}^{100} \pi(p) dp \ee
+$$ p_{\text{maj}} = \int\limits_0^{100} \rho(p) V(p) dp $$
 
-\be p_{\text{maj}} = \int\limits_0^{100} \rho(p) V(p) dp \ee
-
-At this moment, we could've started writing a code for numeric integrating $\rho(p) V(p)$. But instead, let us have another look at  (\ref{ocenkap}). Write it out once again:
+At this moment, we could've started writing a code for numeric integrating $\rho(p) V(p)$. But instead, let us have another look at (\ref{ocenkap}). Write it out once again:
 
 $$ \rho(p) = \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot \overline{T} (1-s)^{\frac{pH}{100}} \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}}{2(\overline{T}-1)} \left(\overline{T} - 1 - \overline{T} (1-s)^{\frac{pH}{100}} \right)^2 \right) = $$ $$= \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot \overline{T} (1-s)^{\frac{pH}{100}} \sqrt{\frac{n\overline{T}}{2(\overline{T}-1)}}  \cdot \exp\left(- \frac{n\overline{T}^3}{2(\overline{T}-1)} \left(\frac{\overline{T} - 1}{\overline{T}} - (1-s)^{\frac{pH}{100}}\right)^2 \right)  $$
 
-It isn't hard to see that $-n\overline{T}^3/(2(\overline{T}-1))$ (multiplier under exponent), is huge. Indeed, no blockchain platform is created so far, that had block time less than $15$ seconds. When a network disintegrates, block time becomes bigger. For conservative estimate, one has $\overline{T} > 15$. For $n$ one can say $n > 1$. Thus, \be\label{betaestimate}\frac{n\overline{T}^3}{2(\overline{T}-1)} > 120\ee
+It isn't hard to see that $-n\overline{T}^3/(2(\overline{T}-1))$ (multiplier under exponent), is huge. Indeed, no decentralized platform at this point can have block time less than $15$ seconds. When a network disintegrates, block time becomes bigger. For conservative estimate, one has $\overline{T} > 15$. For $n$ one can say $n > 1$. Thus, 
 
-Using notation $(1-s)^{\frac{pH}{100}} \equiv y$, $(n\overline{T}^3)/(2(\overline{T}-1)) \equiv \beta$, $(\overline{T}-1)/\overline{T} \equiv \gamma$ we have $$ \rho(y) =  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot y \sqrt{\beta}  \cdot \exp\left(- \beta (\gamma - y)^2 \right), \hskip 20 pt \beta > 120.$$
+$$ \label{betaestimate}\frac{n\overline{T}^3}{2(\overline{T}-1)} > 120 $$
+
+Using notation 
+
+$$(1-s)^{\frac{pH}{100}} \equiv y, (n\overline{T}^3)/(2(\overline{T}-1)) \equiv \beta, (\overline{T}-1)/\overline{T} \equiv \gamma$$ 
+
+we have 
+
+$$ \rho(y) =  \frac{-\ln(1-s)}{\sqrt{\pi}} \cdot y \sqrt{\beta}  \cdot \exp\left(- \beta (\gamma - y)^2 \right), \hskip 20 pt \beta > 120.$$
 
 Clearly, with $\beta>120$ gauss bell curve is narrow one. For such big $\beta$ this function degenerates to \textit{Dirac $\delta$-function}:
 
@@ -558,14 +574,14 @@ $$f_k (x) = \frac{k}{\sqrt{\pi}} e^{-(kx)^2} \xrightarrow{k \to\infty} \delta(x)
 
 Our problem led to exactly same function, with $\sqrt{\beta}$ standing for $k$. By the definition, $\beta$ tends to infinity for $n\to\infty$. Thus, for very big $n$ $$ \rho(y) =  -\ln(1-s) \cdot y  \cdot \delta(\gamma - y).$$ Returning to variable $p$, one obtains
 
-\be\label{rhodelta} \rho(p) =  -\ln(1-s) \cdot (1-s)^{\frac{pH}{100}}  \cdot \delta\left(\gamma - (1-s)^{\frac{pH}{100}}\right)\ee
+$$ \label{rhodelta} \rho(p) =  -\ln(1-s) \cdot (1-s)^{\frac{pH}{100}}  \cdot \delta\left(\gamma - (1-s)^{\frac{pH}{100}}\right) $$
 
 It would be nice to get function that directly points to the computational power percent (i.e. proportional to $\delta(p - \text{value})$). We utilize the well-known $\delta$-function property $\delta(f(x)) = \sum\limits_k \delta(x - x_k)/|f'(x_k)|$, where $x_k$ --- simple zeros of $f(x)$. Let $a = (1-s)$, $b = \gamma$, $c = H/100$. We have $$\delta\left(b - a^{cp} \right) = \frac{\delta\left( p - \frac{1}{c} \log_a b \right)}{\left| - c a^{c \frac{1}{c} \log_a b} \ln a \right|} = \frac{\delta\left( p - \frac{1}{c} \log_a b \right)}{\left| - c b \ln a \right|} = \frac{1}{-\ln a} \cdot \frac{\delta\left( p - \frac{1}{c} \log_a b \right)}{bc} $$
 (we used monotonicity of $a^{cp}$ here, as well as the fact that meaning of our notations imply $c > 0$, $b > 0$, $\ln a < 0$).
 
 Returning from variables $a$, $b$, $c$ to those with which we started, and substituting the outcome thing to(\ref{rhodelta}), we obtain
 
-$$\rho (p) = -\ln(1-s) \cdot (1-s)^{\frac{pH}{100}} \cdot    \frac{1}{-\ln (1-s)} \cdot \frac{\delta\left( p - \frac{100}{H} \log_{1-s} \gamma \right)}{H \gamma/100} = (1-s)^{\frac{p H}{100}} \frac{100}{H \gamma} \delta\left( p - \frac{100}{H} \log_{1-s} \gamma \right)$$
+$$\rho (p) = -\ln(1-s) \cdot (1-s)^{\frac{pH}{100}} \cdot \frac{1}{-\ln (1-s)} \cdot \frac{\delta\left( p - \frac{100}{H} \log_{1-s} \gamma \right)}{H \gamma/100} = (1-s)^{\frac{p H}{100}} \frac{100}{H \gamma} \delta\left( p - \frac{100}{H} \log_{1-s} \gamma \right)$$
 
 Why did we do all that? The answer is, there is no function that is nicer in integrating than Dirac $\delta$-function: $$\int\limits_{-\infty}^{\infty} f(x) \delta(x - x_0) dx = f(x_0)$$ The answer to an original problem is integral of $\rho(p) V(p)$. The possibility to rephrase one of the multipliers of $\rho(p)$ as a $\delta$-function means that, instead of calculating the integral, one just has to calculate the value of $V(p)$ in some point. Namely,
 
@@ -574,4 +590,4 @@ $$p_{\text{maj}} = \int\limits_0^{100} \rho(p) V(p) dp = \int\limits_0^{100} (1-
 \be\label{easy}  \boxed{p_{\text{maj}} = \frac{100}{H} V\left(\frac{100}{H} \log_{1-s} \gamma\right)}, \ee where $V(...)$ stands for evaluation of $V$ at the point $\frac{100}{H} \log_{1-s} \gamma$.
 
 
-It is important to say that formula (\ref{easy}) is  \textit{approximate} one, that gives good accuracy for big $n$ and $\overline{T}$ (for big $\beta = n\overline{T}^3/(2(\overline{T}-1))$, to be precise). We will leave it for reader which way to choose --- simple or complicated one. Simple is --- integral with $\delta$-функцией, which led to the expression (\ref{easy}). The complicated one is --- numeric integration of product $\rho(p) V(p)$, which provides precise answer, but also requires splitting $p$ to more and more intervals for growing $\beta$'s. The complicated one does not fit well for big $\beta$'s, and then simple one is the case.
+It is important to say that formula (\ref{easy}) is  \textit{approximate} one, that gives good accuracy for big $n$ and $\overline{T}$ (for big $\beta = n\overline{T}^3/(2(\overline{T}-1))$, to be precise). We will leave it for reader which way to choose --- simple or complicated one. Simple is --- integral with $\delta$-function, which led to the expression (\ref{easy}). The complicated one is --- numeric integration of product $\rho(p) V(p)$, which provides precise answer, but also requires splitting $p$ to more and more intervals for growing $\beta$'s. The complicated one does not fit well for big $\beta$'s, and then simple one is the case.
