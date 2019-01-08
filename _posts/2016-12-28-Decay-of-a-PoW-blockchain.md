@@ -50,7 +50,7 @@ Suppose difficulty adjustment occurs every $z$ blocks and the average time to so
 Let $H$ be a network hashrate prior to the split, $h$ be a hashrate of a segment under examination, $h_1$, $h_2$, ..., $h_{N−1}$ be hashrates of remaining $(N − 1)$ elements of the network. It is clear that
 
 
-$$\nolabel H = h + \sum\limits_{i=1}^{N-1} h_i$$
+$$\notag H = h + \sum\limits_{i=1}^{N-1} h_i$$
 
 
 After the split occurred, miners will continue to solve blocks with the initial difficulty value $\Delta$. In a segment under examination the average time to solve a block will be $$T \cdot \frac{H}{h}$$ minutes
@@ -79,7 +79,7 @@ $$\nonumber M\xi = 1 \cdot s + 2 \cdot s(1-s) + 3 \cdot s(1-s)^2 + ... = s (1 + 
 
 $$\nonumber = -s ( 1 + (1-s) + (1-s)^2 + (1-s)^3 + (1-s)^4 + ... )' = -s \cdot (\frac{1}{1-(1-s)})' =$$ $$= -s \cdot (\frac{1}{s})' = -s \cdot (- \frac{1}{s^2}) = \frac{1}{s}$$
 
-A block is most likely to be solved by a first hash ($s > s(1 − s) > s(1 − s)^2 > ...$). However, the multiplier $(1−s)$ is so close to $1$ and $s$ value is so small that there will be no bias toward the first hash. The case shows that the expected value of hashes that miners will compute to solve a block is equal to $1/s$. The $s$ value is usually very small, and therefore, the $1/s$ value is very large. To illustrate this point, here is a current $s$ value in the Bitcoin network registered in January 2017:
+A block is most likely to be solved by a first hash ($s > s(1 − s) > s(1 − s)^2 > ...$). However, the multiplier $(1−s)$ is so close to $1$ and $s$ value is so small that there will be no bias toward the first hash. The case shows that the expected value of hashes that miners will compute to solve a block is equal to $1/s$. The $s$ value is usually very small, and therefore, the $1/s$ value is very large. To illustrate this point, here is a current $s$ value in the Bitcoin network registered in December 2016:
 $$s = 0.0000000000000000000007506940164459079$$ 
 
 Once again, the probability distribution of random variable $\xi$ is known. It goes as follows:
@@ -184,10 +184,6 @@ If you take $g(\vec T, h)$, which does not meet the second condition, the answer
 
 
 
-
-
-
-
 Most probability distributions do not allow to construct this function, and the probability distribution for the random variable $\tau$ is no exception. So we have to use the central limit theorem. It says that (1) the sum $n$ of independent and identically distributed random variables tends toward a normal distribution with increasing $n$; (2) the expected value of the normal distribution equals to $n$ expected values of the random variables; (3) the variance of the normal distribution equals to $n$ variances of random variables. In other words, 
 
 $$T_1 + T_2 + ... + T_n \xrightarrow{n\to\infty} N(n \cdot M\tau, n \cdot D\tau)$$
@@ -209,7 +205,7 @@ The distribution function of the random variable $\eta$ fortunately does not dep
 
 However, it is not that simple since the denominator $\sqrt{x}$ in (\ref{sqrtx}) gets in the way. Fortunately we can eliminate it.
 
-According to one of the properties of sample moments, the sample mean $\overline{T}$ is a consistent estimator for the expected value of the variable $T$. In other words, if $M \abs{T} < \infty$, $\overline{T} \xrightarrow{p} MT$ as $n\to\infty$. 
+According to one of the properties of sample moments, the sample mean $\overline{T}$ is a consistent estimator for the expected value of the variable $T$. In other words, if $M \lvert T \rvert < \infty$, $\overline{T} \xrightarrow{p} MT$ as $n\to\infty$. 
 
 In this case $MT = 1/(1-x)$, so 
 
