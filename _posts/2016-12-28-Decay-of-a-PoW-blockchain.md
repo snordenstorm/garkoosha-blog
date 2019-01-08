@@ -75,7 +75,7 @@ Why is that? In fact, it is the third hash that will solve a block. The first tw
 
 As it should have turned out these probabilities are being summed up to
 
-$$s + s(1-s) + s(1-s)^2 + ... = s \Big( 1 + (1-s) + (1-s)^2 + ... \Big) = s \cdot \frac{1}{1-(1-s)} = s \cdot \frac{1}{s} = 1$$
+$$ \nonumber s + s(1-s) + s(1-s)^2 + ... = s \Big( 1 + (1-s) + (1-s)^2 + ... \Big) = s \cdot \frac{1}{1-(1-s)} = s \cdot \frac{1}{s} = 1$$
 
 We calculate the expected value of the random variable:
 
