@@ -24,7 +24,7 @@ Let $h$ be the hashing power of our miner [hash/s], $N$ be the quantity of rigs 
 
 The share under control of such a miner is $\frac{Nh}{H + Nh},$ where $H$ [hash/s] is total network hashrate before she turned her rigs on. Daily revenue is $\frac{Nhap}{H + Nh}$, where $a$ is the daily average amount of currency mined by the network (piecewise-constant; in most protocols, [it is constant for years](https://en.bitcoin.it/wiki/Controlled_supply)), and $p$ is XYZ/USD exchange rate (the dollar price of 1 XYZ coin). Daily costs are $24ewN$, where $e$ is dollar price of 1 kilowatt-hour (varies from region to region), and $w$ is electric power consumption of the GPU in kilowatts.
 
-Thus, $$ \tag{1} \text{daily farm revenue} = N \left( \frac{hap}{H + Nh} - 24ew \right)$$
+Thus, $$ \label{daily} \text{daily farm revenue} = N \left( \frac{hap}{H + Nh} - 24ew \right)$$
 
 To calculate monthly farm profit, one might want to multiply this expression by 30 (or 31, religion-dependent). That would lead to the incorrect result: average total network hashrate $H$ varies in time, and varies significantly. What was network hashrate a week ago, may be pretty far from a network hashrate now.
 
@@ -32,9 +32,9 @@ Parameters $H$, $p$ are (un)predictable and do not depend on the miner. Unlike t
 
 Typically, network hashrate grows in time, but that's not the rule, and drawdowns also happen. Network hashrate heavily depends on the coin price. If price skyrockets, mining gets very profitable, so more people buy the rigs and mining difficulty gets higher into the cloud. If price diminishes or in case of hot weather, miners may switch off some of their mining rigs.
 
-To come up with a correct formula for monthly farm profit, you have to sum up the daily profits calculated with correct changing values of $H$ — essentially integrating the expression (\ref(1)):
+To come up with a correct formula for monthly farm profit, you have to sum up the daily profits calculated with correct changing values of $H$ — essentially integrating the expression (\ref{daily}):
 
-$$ \tag{2} \text{monthly farm revenue} = N \int\limits_{t_{\text{month start}}}^{t_{\text{month end}}} dt\left( \frac{hap}{H(t) + Nh} - 24ew \right) $$
+$$ \label{monthly} \text{monthly farm revenue} = N \int\limits_{t_{\text{month start}}}^{t_{\text{month end}}} dt\left( \frac{hap}{H(t) + Nh} - 24ew \right) $$
 
 As we pointed out earlier, $H$ is more likely to grow than decline. Historical data says so. 
 
@@ -44,9 +44,9 @@ As we pointed out earlier, $H$ is more likely to grow than decline. Historical d
 
 To tell if this mining venture is financially sound, we shall, of course, take into account that these rigs have their cost. Let $c$ be the dollar price of one mining rig, let $s$ be its shipping cost, and let $o$ be the cost of supplementary hardware or other expense one rig creates (the overhead cost). 
 
-This turns (\ref{3}) into 
+This turns (\ref{monthly}) into 
 
-$$ \tag{4} \text{total farm profit} = - N (c+s+o) + N \int\limits_{t_{\text{start}}}^{t_{\text{off}}} dt\left( \frac{hap}{H(t) + Nh} - 24ew \right) $$
+$$ \label{total} \text{total farm profit} = - N (c+s+o) + N \int\limits_{t_{\text{start}}}^{t_{\text{off}}} dt\left( \frac{hap}{H(t) + Nh} - 24ew \right) $$
 
 One can remark here: coin price $p$ changes with the time just as hashrate $H$ does, why doesn't the formula reflect it? The answer is, this dependence matters only if we sell the mined coins right after they are mined, if there is a continuous process of "selling" running in parallel to the process of "mining". Typically the situation is different and coins are sold "in portions"; $p$ is the exchange rate at the day coin is sold.
 
@@ -60,9 +60,9 @@ $$H(t) = H_{\text{start}} \cdot  e^{\alpha (t - t_{\text{start}})}$$
 
 The art of being an entrepreneur comprises the ability to guess the correct form of the function, and to estimate the coefficients $k$, $m$, $\alpha$ well. One may find recent historical data (last month, last quarter, last year) helpful for these estimations. 
 
-Our role here is to perform the math and calculate the profit for each of the three extrapolations: linear, quadratic, and exponential one. To simplify the calculations, we would like to point out that in most cases $Nh \ll H(t)$, so $Nh$ in denominator can be safely neglected, turning the r.h.s. of (\ref(4)) into
+Our role here is to perform the math and calculate the profit for each of the three extrapolations: linear, quadratic, and exponential one. To simplify the calculations, we would like to point out that in most cases $Nh \ll H(t)$, so $Nh$ in denominator can be safely neglected, turning the r.h.s. of (\ref{total}) into
 
-$$\text{total farm profit} = - N (c+s+o) + N \int\limits_{t_{\text{start}}}^{t_{\text{off}}} dt\left( \frac{hap}{H(t)} - 24ew \right)  = $$ $$ =  - N (c+s+o)  - 24eNw (t_{\text{off}} - t_{\text{start}})+ Nhap \int\limits_{t_{\text{start}}}^{t_{\text{off}}} \frac{dt}{H(t)}  $$
+$$\text{total farm profit} = - N (c+s+o) + N \int\limits_{t_{\text{start}}}^{t_{\text{off}}} dt\left( \frac{hap}{H(t)} - 24ew \right)  =  - N (c+s+o)  - 24eNw (t_{\text{off}} - t_{\text{start}})+ Nhap \int\limits_{t_{\text{start}}}^{t_{\text{off}}} \frac{dt}{H(t)}  $$
 
 Consider the integral
 
@@ -74,7 +74,7 @@ $$  I_{\text{linear}} = \int\limits_{t_{\text{start}}}^{t_{\text{off}}} \frac{dt
 
 For quadratic extrapolation,
 
-$$  I_{\text{quadratic}} = \int\limits_{t_{\text{start}}}^{t_{\text{off}}} \frac{dt}{H_{\text{start}} + k (t - t_{\text{start}})  + m (t - t_{\text{start}})^2}   = $$ $$= \frac{2}{\sqrt{4m H_{\text{start}} - k^2}} \left( \arctan \frac{2m (t_{\text{off}} - t_{\text{start}}) + k}{\sqrt{4m H_{\text{start}} - k^2}} - \arctan \frac{ k}{\sqrt{4m H_{\text{start}} - k^2}} \right) $$
+$$  I_{\text{quadratic}} = \int\limits_{t_{\text{start}}}^{t_{\text{off}}} \frac{dt}{H_{\text{start}} + k (t - t_{\text{start}})  + m (t - t_{\text{start}})^2}   =  \frac{2}{\sqrt{4m H_{\text{start}} - k^2}} \left( \arctan \frac{2m (t_{\text{off}} - t_{\text{start}}) + k}{\sqrt{4m H_{\text{start}} - k^2}} - \arctan \frac{ k}{\sqrt{4m H_{\text{start}} - k^2}} \right) $$
 
 In exponential case,
 
@@ -115,7 +115,7 @@ It's pretty easy to solve this equation. Since $1/3600$ is small fraction, $h \l
 
 Thus, for our purpose (to earn 1 BTC/day by mining) we should buy sha256-hashing hardware that can calculate 333 Thash/s.
 
-By March 2016 AntMiner S5+ is the rig with highest hashrate. Its hashing power is 7.7 Thash/s and it can be purchased for $2307 (shipping cost excluded). To achieve 333 Thash/s, one should buy 43 of them, with expenses totalling to $100,000. Earning 1 BTC per day (w.r.t. March 2016 prices, 1 BTC = $415), we reach breakeven point by day 239. By this day, total network hashrate can grow twice, thrice and to the moon; in reality, our revenue will become lower every day, and our investments will not always break even. In this reasoning, we didn't take into account electricity, staff and warehouse rent expenses.
+By March 2016 AntMiner S5+ is the rig with highest hashrate. Its hashing power is 7.7 Thash/s and it can be purchased for \$2307 (shipping cost excluded). To achieve 333 Thash/s, one should buy 43 of them, with expenses totalling to $100,000. Earning 1 BTC per day (w.r.t. March 2016 prices, 1 BTC = \$415), we reach breakeven point by day 239. By this day, total network hashrate can grow twice, thrice and to the moon; in reality, our revenue will become lower every day, and our investments will not always break even. In this reasoning, we didn't take into account electricity, staff and warehouse rent expenses.
 
 Moreover, in June 2016 the next halving will happen --- according to Bitcoin protocol, every 210000 blocks block reward [becomes twice lower](https://en.bitcoin.it/wiki/Controlled_supply). In terms of bitcoin, daily mining profit will fall twice. However, this does not mean necessarily losses --- if BTC/USD exchange rate grows more than twice at the time, miners wouldn't earn less. As you see, mining profitability highly depends on bitcoin exchange rate, since miners each in bitcoin and spend (buy rigs, pay for electricity) in fiat currencies.
 
