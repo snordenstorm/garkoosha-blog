@@ -91,7 +91,7 @@ You substitute one of the three expressions for the integral into (\ref{total}),
 
 The time $t_{\text{off}}$ is not infinity. It may happen that some day, with the growth of the network hashrate, electricity costs get bigger than revenue associated with mining. This is the day the rigs become obsolete, and mining with them should be stopped by that point. It gets economically sound to switch them off.
 
-When this happens, integrand in (\ref{2}) becomes zero: 
+When this happens, integrand in (\ref{total}) becomes zero: 
 
 $$ \frac{hap}{H_{\text{critical}}} - 24ew = 0$$
 
@@ -121,7 +121,7 @@ $$h = 1.2 \cdot 10^{18} \cdot \frac{1}{3600} = 3.33 \cdot 10^{14} \frac{\text{ha
 
 Thus, for our purpose (to earn 1 BTC/day by mining) we should buy sha256-hashing hardware that can calculate 333 Thash/s.
 
-By March 2016 AntMiner S5+ is the rig with highest hashrate. Its hashing power is 7.7 Thash/s and it can be purchased for \$2307 (shipping cost excluded). To achieve 333 Thash/s, one should buy 43 of them, with expenses totalling to $100,000. Earning 1 BTC per day (w.r.t. March 2016 prices, 1 BTC = \$415), we reach breakeven point by day 239. By this day, total network hashrate can grow twice, thrice and to the moon; in reality, our revenue will become lower every day, and our investments will not always break even. In this reasoning, we didn't take into account electricity, staff and warehouse rent expenses.
+By March 2016 AntMiner S5+ is the rig with highest hashrate. Its hashing power is 7.7 Thash/s and it can be purchased for \$ 2307 (shipping cost excluded). To achieve 333 Thash/s, one should buy 43 of them, with expenses totalling to $100,000. Earning 1 BTC per day (w.r.t. March 2016 prices, 1 BTC = \$ 415), we reach breakeven point by day 239. By this day, total network hashrate can grow twice, thrice and to the moon; in reality, our revenue will become lower every day, and our investments will not always break even. In this reasoning, we didn't take into account electricity, staff and warehouse rent expenses.
 
 Moreover, in June 2016 the next halving will happen --- according to Bitcoin protocol, every 210000 blocks block reward [becomes twice lower](https://en.bitcoin.it/wiki/Controlled_supply). In terms of bitcoin, daily mining profit will fall twice. However, this does not mean necessarily losses --- if BTC/USD exchange rate grows more than twice at the time, miners wouldn't earn less. As you see, mining profitability highly depends on bitcoin exchange rate, since miners each in bitcoin and spend (buy rigs, pay for electricity) in fiat currencies.
 
