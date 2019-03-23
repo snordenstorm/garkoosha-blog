@@ -8,13 +8,15 @@ published: true
 
 <!--Ethereum hashing algorithm (dagger-hashimoto) is ASIC-resistant by design: it requires at least 1 Gb of RAM, and the requirements grow with the growth of Ethereum mainnet chain. Only general-purpose hardware (CPU/GPU) suits for this mining algorithm, with GPU being clearly the most efficient.-->
 
-<!--more-->
-
 Creating a coin, you will probably give its initial distribution a think. 
 
 There are three *fair* ways to conduct initial coin distribution. First fair way is to organize a free-to-play competition, participating in which, people could earn the coins. (This is what is called proof-of-work mining, or PoW mining.) Second fair way is to offer anyone to buy the coins. (This is called crowdsale.) Third fair way is to offer anyone to burn their money, typically by sending their bitcoin to the address it would take an expected time of several Universe existence times to brute-force the private key. (This is called proof-of-burn.) A giveaway without explicit rules provides us an example of an *unfair* initial coin distribution, since, in this case, monetary reward is not proportional to the amount of resource sacrificed.
 
 In this post, we will briefly discuss the first fair way of initial coin distribution — PoW mining.
+
+<!--more-->
+
+
 
 This free-to-play competition is, in almost all cases, competition in computation. People buy and setup the hardware, typically GPUs or ASICs, depending on currency they choose to mine. For the sake of generality, we call this currency XYZ.
 
@@ -24,7 +26,9 @@ Let $h$ be the hashing power of our miner [hash/s], $N$ be the quantity of rigs 
 
 The share under control of such a miner is $\frac{Nh}{H + Nh},$ where $H$ [hash/s] is total network hashrate before she turned her rigs on. Daily revenue is $\frac{Nhap}{H + Nh}$, where $a$ is the daily average amount of currency mined by the network (piecewise-constant; in most protocols, [it is constant for years](https://en.bitcoin.it/wiki/Controlled_supply)), and $p$ is XYZ/USD exchange rate (the dollar price of 1 XYZ coin). Daily costs are $24ewN$, where $e$ is dollar price of 1 kilowatt-hour (varies from region to region), and $w$ is electric power consumption of the GPU in kilowatts.
 
-Thus, $$ \label{daily} \text{daily farm revenue} = N \left( \frac{hap}{H + Nh} - 24ew \right)$$
+Thus, 
+
+$$ \label{daily} \text{daily farm revenue} = N \left( \frac{hap}{H + Nh} - 24ew \right)$$
 
 To calculate monthly farm profit, one might want to multiply this expression by 30 (or 31, religion-dependent). That would lead to the incorrect result: average total network hashrate $H$ varies in time, and varies significantly. What was network hashrate a week ago, may be pretty far from a network hashrate now.
 
@@ -80,7 +84,7 @@ In exponential case,
 
 $$  I_{\text{exp}} = \int\limits_{t_{\text{start}}}^{t_{\text{off}}} \frac{dt}{H_{\text{start}} \cdot  e^{\alpha (t - t_{\text{start}})} }   = \frac{1 - e^{-\alpha (t_{\text{off}} - t_{\text{start}})}}{\alpha H_{\text{start}}} $$
 
-You substitute one of the three expressions for the integral into (), and this is it. Apart from choosing the most accurate approximation with accurate coefficients ($k$, $m$, $\alpha$), the assessment of unit shipping cost $s$ and overhead cost $o$ is also critical for the success of the venture.
+You substitute one of the three expressions for the integral into (\ref{total}), and this is it. Apart from choosing the most accurate approximation with accurate coefficients ($k$, $m$, $\alpha$), the assessment of unit shipping cost $s$ and overhead cost $o$ is also critical for the success of the venture.
 
 
 #### When it gets unprofitable
@@ -111,7 +115,9 @@ In 2016 mining is hard business with very unclear profit perspectives. Those who
 
 The perspectives are obscure. By March 2016 Bitcoin total hashing power [fluctuates around](https://blockchain.info/charts/hash-rate) $1.2 \cdot 10^{18}$ hashes per second. On average, 3600 bitcoins are mined every day; if an enterpreneur wants to earn 1 BTC a day by mining, his hashing power $h$ should constitute roughly $1/3600$ of total network hashrate. Let's write it in equation: $$\frac{h}{1.2 \cdot 10^{18} + h} = \frac{1}{3600},$$ where $h$ is hashing power to be acquired (bought or produced).
 
-It's pretty easy to solve this equation. Since $1/3600$ is small fraction, $h \ll 1.2 \cdot 10^{18}$ holds, so $$\frac{h}{1.2 \cdot 10^{18} + h} \approx \frac{h}{1.2 \cdot 10^{18}}.$$ Thus  $$h = 1.2 \cdot 10^{18} \cdot \frac{1}{3600} = 3.33 \cdot 10^{14} \frac{\text{hash}}{\text{s}} = 333 \frac{\text{Thash}}{\text{s}}$$
+It's pretty easy to solve this equation. Since $1/3600$ is small fraction, $h \ll 1.2 \cdot 10^{18}$ holds, so $$\frac{h}{1.2 \cdot 10^{18} + h} \approx \frac{h}{1.2 \cdot 10^{18}}.$$ Thus  
+
+$$h = 1.2 \cdot 10^{18} \cdot \frac{1}{3600} = 3.33 \cdot 10^{14} \frac{\text{hash}}{\text{s}} = 333 \frac{\text{Thash}}{\text{s}}$$
 
 Thus, for our purpose (to earn 1 BTC/day by mining) we should buy sha256-hashing hardware that can calculate 333 Thash/s.
 
