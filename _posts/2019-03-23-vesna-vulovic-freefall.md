@@ -30,18 +30,34 @@ Well, it doesn't seem like a landing speed with which one can survive.
 
 The rules () are derived in an assumption that gravity is the only force in place. In fact, air resistance force plays crucial role for objects. It is directed opposite to the relative motion of .
 
-While earlier we had $$ma = \sum\limits_{i} F_i = mg,$$ now $$ma = \sum\limits_{i} F_i = mg - kv^2$$
- where $k$ is air friction coefficient. Taking into account that body acceleration is the derivative of its velocity ($a = \dot v = dv/dt$), $$m \frac{dv}{dt} = mg - kv^2$$ $$\frac{mdv}{mg - kv^2} = dt$$
+While earlier we had 
+
+$$\nonumber ma = \sum\limits_{i} F_i = mg$$
+
+now 
+
+$$\nonumber ma = \sum\limits_{i} F_i = mg - kv^2$$
+
+
+where $k$ is air friction coefficient. Taking into account that body acceleration is the derivative of its velocity ($a = \dot v = dv/dt$), 
+
+$$\nonumber m \frac{dv}{dt} = mg - kv^2$$ 
+
+$$\nonumber \frac{mdv}{mg - kv^2} = dt$$
 
 Integrating both parts, we obtain
 
-$$ \frac{1}{2} \sqrt{\frac{m}{gk}}  \ln \left( \frac{\sqrt{mg/k} + v}{ \sqrt{mg/k} - v} \right) = t + C$$
+$$ \nonumber \frac{1}{2} \sqrt{\frac{m}{gk}}  \ln \left( \frac{\sqrt{mg/k} + v}{ \sqrt{mg/k} - v} \right) = t + C$$
 
-Constant can be found from the initial condition: with $t=0$ starting velocity $v$ was also zero (free fall),  so
-$$\frac{1}{2} \sqrt{\frac{m}{gk}}  \ln \left( \frac{\sqrt{mg/k} + 0}{ \sqrt{mg/k} - 0} \right) = 0 + C$$
-$$\frac{1}{2} \sqrt{\frac{m}{gk}} \cdot \ln 1 = 0 + C$$
-$$\frac{1}{2}\sqrt{\frac{m}{gk}} \cdot 0 = 0 + C$$
-$$  0 = C$$
+Constant can be found from the initial condition: with $t=0$ starting velocity $v$ was also zero (free fall), so
+
+$$ \nonumber \frac{1}{2} \sqrt{\frac{m}{gk}}  \ln \left( \frac{\sqrt{mg/k} + 0}{ \sqrt{mg/k} - 0} \right) = 0 + C$$
+
+$$ \nonumber \frac{1}{2} \sqrt{\frac{m}{gk}} \cdot \ln 1 = 0 + C$$
+
+$$ \nonumber \frac{1}{2}\sqrt{\frac{m}{gk}} \cdot 0 = 0 + C$$
+
+$$ \nonumber  0 = C$$
 
 Thus, () can be rewritten as
 
@@ -56,7 +72,8 @@ $$v = - \sqrt{\frac{mg}{k}} \left( 1 -    \frac{2}{ 1 + e^{2t \sqrt{\frac{gk}{m}
 The velocity is bounded from above — see it? With $t \to \infty$ we see that the absolute value of our free falling body's velocity will never reach $\sqrt{\frac{mg}{k}}$.
 
 Let's obtain the precise expression for $v_\text{landing} (h)$. Using hyperbolic functions, we rewrite ()
-$$v = - \sqrt{\frac{mg}{k}} \tanh \left( t \sqrt{\frac{gk}{m}} \right)$$
+
+$$\nonumber v = - \sqrt{\frac{mg}{k}} \tanh \left( t \sqrt{\frac{gk}{m}} \right)$$
 
 and then enter another differential equation
 
@@ -70,15 +87,15 @@ For $t = 0$ the height $x$ was equal to $h$, so $$h \frac{k}{m} = C$$ ($\cosh 0 
 
 Our goal remains the same: the dependence $v(h)$. Keeping going...
 
-$$e^{(h-x) \frac{k}{m}} = \cosh \left( t \sqrt{\frac{gk}{m}} \right)  $$
+$$\nonumber e^{(h-x) \frac{k}{m}} = \cosh \left( t \sqrt{\frac{gk}{m}} \right)  $$
 
-$$e^{t \sqrt{\frac{gk}{m}}} = e^{(h-x) \frac{k}{m}} + \sqrt{e^{2(h-x) \frac{k}{m}} - 1}$$ 
+$$\nonumber e^{t \sqrt{\frac{gk}{m}}} = e^{(h-x) \frac{k}{m}} + \sqrt{e^{2(h-x) \frac{k}{m}} - 1}$$ 
 
-$$e^{2t \sqrt{\frac{gk}{m}}} = \left( e^{(h-x) \frac{k}{m}} + \sqrt{e^{2(h-x) \frac{k}{m}} - 1} \right)^2$$
+$$\nonumber e^{2t \sqrt{\frac{gk}{m}}} = \left( e^{(h-x) \frac{k}{m}} + \sqrt{e^{2(h-x) \frac{k}{m}} - 1} \right)^2$$
 
-$$v = - \sqrt{\frac{mg}{k}} \left( 1 -    \frac{2}{ 1 + \left( e^{(h-x) \frac{k}{m}} + \sqrt{e^{2(h-x) \frac{k}{m}} - 1} \right)^2 } \right)$$
+$$\nonumber v = - \sqrt{\frac{mg}{k}} \left( 1 -    \frac{2}{ 1 + \left( e^{(h-x) \frac{k}{m}} + \sqrt{e^{2(h-x) \frac{k}{m}} - 1} \right)^2 } \right)$$
 
-$$v = - \sqrt{\frac{mg}{k}} \left( 1 -    \frac{1}{ e^{2(h-x) \frac{k}{m}}  +  e^{(h-x) \frac{k}{m}} \sqrt{e^{2(h-x) \frac{k}{m}} - 1}  } \right)$$
+$$\nonumber v = - \sqrt{\frac{mg}{k}} \left( 1 -    \frac{1}{ e^{2(h-x) \frac{k}{m}}  +  e^{(h-x) \frac{k}{m}} \sqrt{e^{2(h-x) \frac{k}{m}} - 1}  } \right)$$
 
 On the ground, $x=0$, so for the landing speed
 
